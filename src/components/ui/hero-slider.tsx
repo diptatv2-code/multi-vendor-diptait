@@ -7,28 +7,28 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
   {
-    title: 'Mega Sale Up to 50% OFF',
-    subtitle: 'Shop the best deals from verified vendors',
+    title: 'Mega Sale — Up to 70% OFF',
+    subtitle: 'Best deals on Electronics, Fashion, Beauty & more',
     cta: 'Shop Now',
     href: '/products',
     bg: 'from-[#F57224] to-[#ff9a5c]',
-    image: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=500&fit=crop',
   },
   {
-    title: 'New Arrivals Every Day',
-    subtitle: 'Electronics, Fashion, Beauty & more',
-    cta: 'Explore',
+    title: 'New Arrivals — Latest Trends',
+    subtitle: '80+ products from top Bangladesh vendors',
+    cta: 'Explore Now',
     href: '/products?sort=newest',
     bg: 'from-[#6C3CE1] to-[#9b6cf7]',
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=500&fit=crop',
   },
   {
     title: 'Free Delivery on ৳2,000+',
-    subtitle: 'Cash on Delivery available nationwide',
+    subtitle: 'Cash on Delivery available all over Bangladesh',
     cta: 'Start Shopping',
     href: '/products',
     bg: 'from-[#00b894] to-[#55efc4]',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=500&fit=crop',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=500&fit=crop',
   },
 ];
 

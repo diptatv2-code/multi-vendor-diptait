@@ -39,7 +39,7 @@ export default async function HomePage() {
 
   const [{ data: products }, { data: categories }, { data: topVendors }, { data: flashDeals }] = await Promise.all([
     supabase.from('products').select('*, images:product_images(*), vendor:vendor_profiles(business_name)')
-      .eq('status', 'approved').eq('is_active', true).order('total_sold', { ascending: false }).limit(8),
+      .eq('status', 'approved').eq('is_active', true).order('total_sold', { ascending: false }).limit(12),
     supabase.from('categories').select('*').is('parent_id', null).eq('is_active', true).order('sort_order').limit(5),
     supabase.from('vendor_profiles').select('*').eq('status', 'approved').order('rating', { ascending: false }).limit(6),
     supabase.from('products').select('*, images:product_images(*), vendor:vendor_profiles(business_name)')
