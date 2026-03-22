@@ -86,7 +86,7 @@ export default function EditProductPage() {
     <div>
       <h1 className="text-2xl font-bold mb-6">Edit Product</h1>
       <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 space-y-4">
           <h2 className="font-semibold">Basic Information</h2>
           <div>
             <label className="block text-sm font-medium mb-1">Name *</label>
@@ -117,12 +117,12 @@ export default function EditProductPage() {
           </label>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 space-y-4">
           <h2 className="font-semibold">Images</h2>
           <ImageUpload value={images} onChange={setImages} bucket="products" folder="products" maxFiles={8} />
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 space-y-4">
           <h2 className="font-semibold">Pricing & Inventory</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>

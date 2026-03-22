@@ -68,9 +68,9 @@ export default function AdminAnalyticsPage() {
           { label: 'Net Vendor Payout', value: formatPrice(stats.netVendorPayout), icon: DollarSign, color: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30' },
           { label: 'Avg Order Value', value: formatPrice(stats.avgOrderValue), icon: ShoppingCart, color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30' },
         ].map((c) => (
-          <div key={c.label} className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
+          <div key={c.label} className="bg-white dark:bg-[#111] rounded-xl p-6 border border-[#F0F0F0] dark:border-[#222]">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-gray-500">{c.label}</span>
+              <span className="text-sm text-[#86868B]">{c.label}</span>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${c.color}`}>
                 <c.icon className="w-5 h-5" />
               </div>
@@ -81,8 +81,8 @@ export default function AdminAnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+          <div className="px-6 py-4 border-b border-[#F0F0F0] dark:border-[#222]">
             <h2 className="font-semibold">Orders by Status</h2>
           </div>
           <div className="p-6 space-y-3">
@@ -101,18 +101,18 @@ export default function AdminAnalyticsPage() {
               </div>
             ))}
             {Object.keys(ordersByStatus).length === 0 && (
-              <p className="text-gray-500 text-sm text-center py-4">No orders data</p>
+              <p className="text-[#86868B] text-sm text-center py-4">No orders data</p>
             )}
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+          <div className="px-6 py-4 border-b border-[#F0F0F0] dark:border-[#222]">
             <h2 className="font-semibold">Top Vendors by Revenue</h2>
           </div>
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
             {topVendors.length === 0 ? (
-              <p className="text-gray-500 text-sm text-center py-8">No vendor data</p>
+              <p className="text-[#86868B] text-sm text-center py-8">No vendor data</p>
             ) : (
               topVendors.map((v, i) => (
                 <div key={i} className="flex items-center justify-between px-6 py-3">
@@ -122,7 +122,7 @@ export default function AdminAnalyticsPage() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium">{formatPrice(v.total_revenue)}</p>
-                    <p className="text-xs text-gray-500">{v.total_sales} sales</p>
+                    <p className="text-xs text-[#86868B]">{v.total_sales} sales</p>
                   </div>
                 </div>
               ))

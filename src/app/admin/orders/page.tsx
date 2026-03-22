@@ -41,7 +41,7 @@ export default function AdminOrdersPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-[#111] border border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]'
             }`}
           >
             {f}
@@ -49,13 +49,13 @@ export default function AdminOrdersPage() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {orders.length === 0 ? (
           <EmptyState icon={<ShoppingCart className="w-8 h-8 text-gray-400" />} title="No orders found" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Order #</th>
                 <th className="px-6 py-3 font-medium">Customer</th>
                 <th className="px-6 py-3 font-medium">Vendor</th>
@@ -67,14 +67,14 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {orders.map((o) => (
-                <tr key={o.id} className="border-b border-gray-100 dark:border-gray-800">
+                <tr key={o.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                   <td className="px-6 py-4 font-medium">{o.order_number}</td>
                   <td className="px-6 py-4">{(o.customer as unknown as { full_name: string })?.full_name}</td>
                   <td className="px-6 py-4">{(o.vendor as unknown as { business_name: string })?.business_name}</td>
                   <td className="px-6 py-4">{formatPrice(o.total)}</td>
                   <td className="px-6 py-4 text-green-600">{formatPrice(o.commission_amount)}</td>
                   <td className="px-6 py-4"><Badge status={o.status} /></td>
-                  <td className="px-6 py-4 text-gray-500">{formatDate(o.created_at)}</td>
+                  <td className="px-6 py-4 text-[#86868B]">{formatDate(o.created_at)}</td>
                 </tr>
               ))}
             </tbody>

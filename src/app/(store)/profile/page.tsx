@@ -72,22 +72,22 @@ export default function ProfilePage() {
       <h1 className="text-2xl font-bold mb-6">My Profile</h1>
 
       <div className="space-y-6">
-        <form onSubmit={saveProfile} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+        <form onSubmit={saveProfile} className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 space-y-4">
           <h2 className="font-semibold">Personal Information</h2>
           <div>
             <label className="block text-sm font-medium mb-1">Full Name</label>
             <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+              className="w-full px-4 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
             <input type="email" value={profile?.email || ''} disabled
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-sm text-gray-500" />
+              className="w-full px-4 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-gray-100 dark:bg-gray-800 text-sm text-gray-500" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+              className="w-full px-4 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
           </div>
           <button type="submit" disabled={saving}
             className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
@@ -95,7 +95,7 @@ export default function ProfilePage() {
           </button>
         </form>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+        <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold">Saved Addresses</h2>
             <button onClick={() => setShowAddAddress(true)} className="flex items-center gap-1 text-sm text-[#F57224] font-medium">
@@ -109,7 +109,7 @@ export default function ProfilePage() {
 
           <div className="space-y-3">
             {addresses.map((addr) => (
-              <div key={addr.id} className="flex items-start justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div key={addr.id} className="flex items-start justify-between p-4 rounded-lg border border-[#F0F0F0] dark:border-[#333]">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium">{addr.label}</span>
@@ -127,28 +127,28 @@ export default function ProfilePage() {
           </div>
 
           {showAddAddress && (
-            <form onSubmit={addAddress} className="mt-4 space-y-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <form onSubmit={addAddress} className="mt-4 space-y-3 p-4 border border-[#F0F0F0] dark:border-[#333] rounded-lg">
               <div className="grid grid-cols-2 gap-3">
                 <input type="text" placeholder="Label (e.g., Home)" value={newAddr.label} onChange={(e) => setNewAddr({ ...newAddr, label: e.target.value })}
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
                 <input type="text" placeholder="Full Name *" value={newAddr.full_name} onChange={(e) => setNewAddr({ ...newAddr, full_name: e.target.value })} required
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
               </div>
               <input type="tel" placeholder="Phone *" value={newAddr.phone} onChange={(e) => setNewAddr({ ...newAddr, phone: e.target.value })} required
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                className="w-full px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
               <input type="text" placeholder="Address *" value={newAddr.address_line1} onChange={(e) => setNewAddr({ ...newAddr, address_line1: e.target.value })} required
-                className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                className="w-full px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
               <div className="grid grid-cols-3 gap-3">
                 <input type="text" placeholder="City *" value={newAddr.city} onChange={(e) => setNewAddr({ ...newAddr, city: e.target.value })} required
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
                 <input type="text" placeholder="State *" value={newAddr.state} onChange={(e) => setNewAddr({ ...newAddr, state: e.target.value })} required
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
                 <input type="text" placeholder="ZIP *" value={newAddr.postal_code} onChange={(e) => setNewAddr({ ...newAddr, postal_code: e.target.value })} required
-                  className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="px-3 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
               </div>
               <div className="flex gap-2">
                 <button type="submit" className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium">Save Address</button>
-                <button type="button" onClick={() => setShowAddAddress(false)} className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm">Cancel</button>
+                <button type="button" onClick={() => setShowAddAddress(false)} className="px-4 py-2 border border-[#F0F0F0] dark:border-[#333] rounded-lg text-sm">Cancel</button>
               </div>
             </form>
           )}

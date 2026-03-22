@@ -3,92 +3,48 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary: #F57224;
-  --primary-dark: #e0621a;
-  --secondary: #6C3CE1;
-  --secondary-dark: #5a2fcf;
-  --background: #f5f5f5;
-  --foreground: #212121;
+  --bg: #ffffff;
+  --fg: #1D1D1F;
+  --muted: #86868B;
+  --border: #F0F0F0;
+  --accent: #F57224;
   --card: #ffffff;
-  --card-border: #e8e8e8;
-  --muted: #757575;
-  --success: #00b894;
-  --danger: #e74c3c;
-  --warning: #f39c12;
 }
 
 .dark {
-  --background: #121212;
-  --foreground: #e0e0e0;
-  --card: #1e1e1e;
-  --card-border: #333;
-  --muted: #9e9e9e;
+  --bg: #111111;
+  --fg: #F5F5F7;
+  --muted: #86868B;
+  --border: #2A2A2A;
+  --accent: #F57224;
+  --card: #1A1A1A;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
 .dark ::-webkit-scrollbar-thumb { background: #444; }
 
-/* Animations */
 @keyframes slide-in-from-right {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 }
-@keyframes fade-in-up {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-@keyframes countdown-tick {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
 
 .animate-in { animation-duration: 300ms; animation-fill-mode: both; }
 .slide-in-from-right { animation-name: slide-in-from-right; }
-.animate-fade-in-up { animation: fade-in-up 0.4s ease-out both; }
-
-/* Line clamp */
-.line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-/* Hide scrollbar for horizontal scroll */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-/* Product card hover */
-.product-card:hover .product-img { transform: scale(1.05); }
-.product-card:hover .cart-overlay { opacity: 1; transform: translateY(0); }
-.cart-overlay { opacity: 0; transform: translateY(8px); transition: all 0.2s ease; }
-
-/* Primary button style */
-.btn-primary {
-  background: var(--primary);
-  color: white;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.15s ease;
-}
-.btn-primary:hover { background: var(--primary-dark); }
-
-.btn-secondary {
-  background: var(--secondary);
-  color: white;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: all 0.15s ease;
-}
-.btn-secondary:hover { background: var(--secondary-dark); }
+.product-card { transition: box-shadow 0.2s ease; }
+.product-card:hover { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+.product-card:hover .product-img { transform: scale(1.03); }
+.product-card:hover .hover-action { opacity: 1; transform: translateY(0); }
+.hover-action { opacity: 0; transform: translateY(6px); transition: all 0.2s ease; }

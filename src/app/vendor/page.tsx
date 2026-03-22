@@ -54,7 +54,7 @@ export default function VendorDashboard() {
   if (!vendor) {
     return (
       <div className="text-center py-16">
-        <p className="text-lg text-gray-500 mb-4">No vendor profile found</p>
+        <p className="text-lg text-[#86868B] mb-4">No vendor profile found</p>
         <Link href="/vendor/register" className="px-6 py-2 bg-[#F57224] text-white rounded-lg">Register as Vendor</Link>
       </div>
     );
@@ -67,7 +67,7 @@ export default function VendorDashboard() {
           <TrendingUp className="w-8 h-8 text-yellow-600" />
         </div>
         <h2 className="text-xl font-bold mb-2">Application Under Review</h2>
-        <p className="text-gray-500">Your vendor application is being reviewed. You&apos;ll be notified once approved.</p>
+        <p className="text-[#86868B]">Your vendor application is being reviewed. You&apos;ll be notified once approved.</p>
       </div>
     );
   }
@@ -86,9 +86,9 @@ export default function VendorDashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
         {cards.map((c) => (
-          <div key={c.label} className="bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-800">
+          <div key={c.label} className="bg-white dark:bg-[#111] rounded-xl p-5 border border-[#F0F0F0] dark:border-[#222]">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs text-gray-500">{c.label}</span>
+              <span className="text-xs text-[#86868B]">{c.label}</span>
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${c.color}`}>
                 <c.icon className="w-4 h-4" />
               </div>
@@ -98,15 +98,15 @@ export default function VendorDashboard() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#F0F0F0] dark:border-[#222]">
           <h2 className="font-semibold">Recent Orders</h2>
           <Link href="/vendor/orders" className="text-sm text-[#F57224] hover:underline">View all</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Order #</th>
                 <th className="px-6 py-3 font-medium">Customer</th>
                 <th className="px-6 py-3 font-medium">Total</th>
@@ -116,15 +116,15 @@ export default function VendorDashboard() {
             </thead>
             <tbody>
               {recentOrders.length === 0 ? (
-                <tr><td colSpan={5} className="px-6 py-8 text-center text-gray-500">No orders yet</td></tr>
+                <tr><td colSpan={5} className="px-6 py-8 text-center text-[#86868B]">No orders yet</td></tr>
               ) : (
                 recentOrders.map((o) => (
-                  <tr key={o.id} className="border-b border-gray-100 dark:border-gray-800">
+                  <tr key={o.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                     <td className="px-6 py-3 font-medium">{o.order_number}</td>
                     <td className="px-6 py-3">{(o.customer as unknown as { full_name: string })?.full_name}</td>
                     <td className="px-6 py-3">{formatPrice(o.total)}</td>
                     <td className="px-6 py-3"><Badge status={o.status} /></td>
-                    <td className="px-6 py-3 text-gray-500">{formatDate(o.created_at)}</td>
+                    <td className="px-6 py-3 text-[#86868B]">{formatDate(o.created_at)}</td>
                   </tr>
                 ))
               )}

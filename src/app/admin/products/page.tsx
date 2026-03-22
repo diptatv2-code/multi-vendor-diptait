@@ -48,7 +48,7 @@ export default function AdminProductsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-[#111] border border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]'
             }`}
           >
             {f}
@@ -56,13 +56,13 @@ export default function AdminProductsPage() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {products.length === 0 ? (
           <EmptyState icon={<Package className="w-8 h-8 text-gray-400" />} title="No products found" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Product</th>
                 <th className="px-6 py-3 font-medium">Vendor</th>
                 <th className="px-6 py-3 font-medium">Category</th>
@@ -76,7 +76,7 @@ export default function AdminProductsPage() {
               {products.map((p) => {
                 const primaryImage = p.images?.find((img) => img.is_primary) || p.images?.[0];
                 return (
-                  <tr key={p.id} className="border-b border-gray-100 dark:border-gray-800">
+                  <tr key={p.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {primaryImage ? (
@@ -88,7 +88,7 @@ export default function AdminProductsPage() {
                         )}
                         <div>
                           <p className="font-medium line-clamp-1">{p.name}</p>
-                          <p className="text-xs text-gray-500">SKU: {p.sku || 'N/A'}</p>
+                          <p className="text-xs text-[#86868B]">SKU: {p.sku || 'N/A'}</p>
                         </div>
                       </div>
                     </td>
@@ -109,7 +109,7 @@ export default function AdminProductsPage() {
                             </button>
                           </>
                         )}
-                        <a href={`/products/${p.slug}`} target="_blank" className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" title="View">
+                        <a href={`/products/${p.slug}`} target="_blank" className="p-1.5 rounded-lg hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]" title="View">
                           <Eye className="w-4 h-4" />
                         </a>
                       </div>

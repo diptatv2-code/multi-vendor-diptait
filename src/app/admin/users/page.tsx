@@ -42,7 +42,7 @@ export default function AdminUsersPage() {
             key={r}
             onClick={() => setRoleFilter(r)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              roleFilter === r ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              roleFilter === r ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-[#111] border border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]'
             }`}
           >
             {r.replace('_', ' ')}
@@ -50,13 +50,13 @@ export default function AdminUsersPage() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {users.length === 0 ? (
           <EmptyState icon={<Users className="w-8 h-8 text-gray-400" />} title="No users found" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">User</th>
                 <th className="px-6 py-3 font-medium">Role</th>
                 <th className="px-6 py-3 font-medium">Status</th>
@@ -66,7 +66,7 @@ export default function AdminUsersPage() {
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.id} className="border-b border-gray-100 dark:border-gray-800">
+                <tr key={u.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xs font-medium text-[#F57224]">
@@ -74,7 +74,7 @@ export default function AdminUsersPage() {
                       </div>
                       <div>
                         <p className="font-medium">{u.full_name || 'No name'}</p>
-                        <p className="text-xs text-gray-500">{u.email}</p>
+                        <p className="text-xs text-[#86868B]">{u.email}</p>
                       </div>
                     </div>
                   </td>
@@ -84,7 +84,7 @@ export default function AdminUsersPage() {
                       {u.is_banned ? 'Banned' : 'Active'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-500">{formatDate(u.created_at)}</td>
+                  <td className="px-6 py-4 text-[#86868B]">{formatDate(u.created_at)}</td>
                   <td className="px-6 py-4">
                     {u.role !== 'admin' && (
                       <button

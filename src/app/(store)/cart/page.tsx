@@ -44,8 +44,8 @@ export default function CartPage() {
           {Object.entries(itemsByVendor).map(([vendorId, vendorItems]) => {
             const vendorName = (vendorItems[0]?.product?.vendor as unknown as { business_name: string })?.business_name || 'Unknown Vendor';
             return (
-              <div key={vendorId} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-800">
+              <div key={vendorId} className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-[#F0F0F0] dark:border-[#222]">
                   <Store className="w-4 h-4 text-gray-400" />
                   <span className="text-sm font-medium">{vendorName}</span>
                 </div>
@@ -66,7 +66,7 @@ export default function CartPage() {
                           <p className="font-bold text-[#F57224] mt-1">{formatPrice(price)}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
-                          <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg">
+                          <div className="flex items-center border border-[#F0F0F0] dark:border-[#333] rounded-lg">
                             <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="p-1.5">
                               <Minus className="w-3 h-3" />
                             </button>
@@ -89,7 +89,7 @@ export default function CartPage() {
         </div>
 
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 sticky top-24">
             <h2 className="font-semibold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm mb-6">
               <div className="flex justify-between">
@@ -100,7 +100,7 @@ export default function CartPage() {
                 <span className="text-gray-500">Delivery</span>
                 <span className="text-gray-500">From ৳70</span>
               </div>
-              <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-base">
+              <div className="pt-3 border-t border-[#F0F0F0] dark:border-[#333] flex justify-between font-bold text-base">
                 <span>Total</span>
                 <span className="text-[#F57224]">{formatPrice(totalPrice)}</span>
               </div>
@@ -110,7 +110,7 @@ export default function CartPage() {
               Proceed to Checkout
             </Link>
             <Link href="/products"
-              className="block w-full text-center py-2.5 mt-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800">
+              className="block w-full text-center py-2.5 mt-2 border border-[#F0F0F0] dark:border-[#333] rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800">
               Continue Shopping
             </Link>
           </div>

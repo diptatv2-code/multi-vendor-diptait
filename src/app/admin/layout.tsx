@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (profile?.role !== 'admin') {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-lg text-gray-500">Access denied. Admin only.</p>
+        <p className="text-lg text-[#86868B]">Access denied. Admin only.</p>
       </div>
     );
   }

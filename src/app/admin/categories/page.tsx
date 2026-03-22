@@ -80,13 +80,13 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {categories.length === 0 ? (
           <EmptyState icon={<Tag className="w-8 h-8 text-gray-400" />} title="No categories yet" description="Create your first category to organize products" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Name</th>
                 <th className="px-6 py-3 font-medium">Slug</th>
                 <th className="px-6 py-3 font-medium">Parent</th>
@@ -96,10 +96,10 @@ export default function AdminCategoriesPage() {
             </thead>
             <tbody>
               {categories.map((cat) => (
-                <tr key={cat.id} className="border-b border-gray-100 dark:border-gray-800">
+                <tr key={cat.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                   <td className="px-6 py-4 font-medium">{cat.parent_id ? `\u00A0\u00A0\u00A0\u2514 ${cat.name}` : cat.name}</td>
-                  <td className="px-6 py-4 text-gray-500">{cat.slug}</td>
-                  <td className="px-6 py-4 text-gray-500">{categories.find((c) => c.id === cat.parent_id)?.name || '-'}</td>
+                  <td className="px-6 py-4 text-[#86868B]">{cat.slug}</td>
+                  <td className="px-6 py-4 text-[#86868B]">{categories.find((c) => c.id === cat.parent_id)?.name || '-'}</td>
                   <td className="px-6 py-4">
                     <span className={`text-xs font-medium ${cat.is_active ? 'text-green-600' : 'text-red-600'}`}>
                       {cat.is_active ? 'Active' : 'Inactive'}
@@ -107,7 +107,7 @@ export default function AdminCategoriesPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(cat)} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                      <button onClick={() => openEdit(cat)} className="p-1.5 rounded-lg hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]">
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button onClick={() => handleDelete(cat.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-600">

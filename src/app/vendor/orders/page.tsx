@@ -64,19 +64,19 @@ export default function VendorOrdersPage() {
       <div className="flex gap-2 mb-6 flex-wrap">
         {filters.map((f) => (
           <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+            className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-[#111] border border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]'}`}>
             {f}
           </button>
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {orders.length === 0 ? (
           <EmptyState icon={<ShoppingCart className="w-8 h-8 text-gray-400" />} title="No orders found" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Order #</th>
                 <th className="px-6 py-3 font-medium">Customer</th>
                 <th className="px-6 py-3 font-medium">Items</th>
@@ -88,13 +88,13 @@ export default function VendorOrdersPage() {
             </thead>
             <tbody>
               {orders.map((o) => (
-                <tr key={o.id} className="border-b border-gray-100 dark:border-gray-800">
+                <tr key={o.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                   <td className="px-6 py-3 font-medium">{o.order_number}</td>
                   <td className="px-6 py-3">{(o.customer as unknown as { full_name: string })?.full_name}</td>
                   <td className="px-6 py-3">{o.items?.length || 0}</td>
                   <td className="px-6 py-3">{formatPrice(o.total)}</td>
                   <td className="px-6 py-3"><Badge status={o.status} /></td>
-                  <td className="px-6 py-3 text-gray-500">{formatDate(o.created_at)}</td>
+                  <td className="px-6 py-3 text-[#86868B]">{formatDate(o.created_at)}</td>
                   <td className="px-6 py-3">
                     <button onClick={() => { setSelectedOrder(o); setNewStatus(o.status); }}
                       className="text-[#F57224] text-sm hover:underline">Update</button>

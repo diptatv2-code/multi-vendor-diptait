@@ -47,7 +47,7 @@ export default function AdminVendorsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-[#111] border border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]'
             }`}
           >
             {f}
@@ -55,13 +55,13 @@ export default function AdminVendorsPage() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {vendors.length === 0 ? (
           <EmptyState icon={<Store className="w-8 h-8 text-gray-400" />} title="No vendors found" />
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Business</th>
                 <th className="px-6 py-3 font-medium">Owner</th>
                 <th className="px-6 py-3 font-medium">Status</th>
@@ -72,7 +72,7 @@ export default function AdminVendorsPage() {
             </thead>
             <tbody>
               {vendors.map((v) => (
-                <tr key={v.id} className="border-b border-gray-100 dark:border-gray-800">
+                <tr key={v.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {v.logo_url ? (
@@ -84,14 +84,14 @@ export default function AdminVendorsPage() {
                       )}
                       <div>
                         <p className="font-medium">{v.business_name}</p>
-                        <p className="text-xs text-gray-500">{v.email}</p>
+                        <p className="text-xs text-[#86868B]">{v.email}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">{v.user_profile?.full_name}</td>
                   <td className="px-6 py-4"><Badge status={v.status} /></td>
                   <td className="px-6 py-4">{v.commission_rate}%</td>
-                  <td className="px-6 py-4 text-gray-500">{formatDate(v.created_at)}</td>
+                  <td className="px-6 py-4 text-[#86868B]">{formatDate(v.created_at)}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1">
                       {v.status === 'pending' && (

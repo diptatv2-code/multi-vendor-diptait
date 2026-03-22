@@ -88,14 +88,14 @@ function ProductsContent() {
           <h1 className="text-2xl font-bold">{search ? `Results for "${search}"` : 'All Products'}</h1>
           <p className="text-sm text-gray-500 mt-1">{totalCount} products found</p>
         </div>
-        <button onClick={() => setShowFilters(!showFilters)} className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm">
+        <button onClick={() => setShowFilters(!showFilters)} className="lg:hidden flex items-center gap-2 px-4 py-2 border border-[#F0F0F0] dark:border-[#333] rounded-lg text-sm">
           <SlidersHorizontal className="w-4 h-4" /> Filters
         </button>
       </div>
 
       <div className="flex gap-8">
         {/* Sidebar filters */}
-        <aside className={`${showFilters ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 p-4 overflow-y-auto' : 'hidden'} lg:block lg:relative lg:w-64 lg:shrink-0`}>
+        <aside className={`${showFilters ? 'fixed inset-0 z-50 bg-white dark:bg-[#1A1A1A] p-4 overflow-y-auto' : 'hidden'} lg:block lg:relative lg:w-64 lg:shrink-0`}>
           <div className="lg:sticky lg:top-24 space-y-6">
             <div className="flex items-center justify-between lg:hidden">
               <h2 className="font-semibold">Filters</h2>
@@ -122,17 +122,17 @@ function ProductsContent() {
               <h3 className="font-medium text-sm mb-2">Price Range</h3>
               <div className="flex items-center gap-2">
                 <input type="number" placeholder="Min" value={minPrice} onChange={(e) => updateParam('min', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="w-full px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
                 <span className="text-gray-400">-</span>
                 <input type="number" placeholder="Max" value={maxPrice} onChange={(e) => updateParam('max', e.target.value)}
-                  className="w-full px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                  className="w-full px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
               </div>
             </div>
 
             <div>
               <h3 className="font-medium text-sm mb-2">Sort By</h3>
               <select value={sort} onChange={(e) => updateParam('sort', e.target.value)}
-                className="w-full px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm">
+                className="w-full px-3 py-1.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm">
                 <option value="newest">Newest</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>

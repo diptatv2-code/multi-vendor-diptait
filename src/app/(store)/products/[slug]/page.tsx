@@ -139,7 +139,7 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         {/* Images */}
         <div>
-          <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 mb-4 group/zoom cursor-crosshair relative">
+          <div className="aspect-square rounded-xl overflow-hidden bg-[#F5F5F7] dark:bg-[#1A1A1A] mb-4 group/zoom cursor-crosshair relative">
             {images[selectedImage] ? (
               <img src={images[selectedImage].url} alt={product.name}
                 className="w-full h-full object-cover transition-transform duration-200 group-hover/zoom:scale-150 origin-center" />
@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
             <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
               {images.map((img, i) => (
                 <button key={img.id} onClick={() => setSelectedImage(i)}
-                  className={`w-20 h-20 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${i === selectedImage ? 'border-[#F57224] ring-2 ring-[#F57224]/20' : 'border-gray-200 dark:border-gray-700 hover:border-[#F57224]'}`}>
+                  className={`w-20 h-20 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${i === selectedImage ? 'border-[#F57224] ring-2 ring-[#F57224]/20' : 'border-[#F0F0F0] dark:border-[#333] hover:border-[#F57224]'}`}>
                   <img src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
@@ -190,7 +190,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg">
+            <div className="flex items-center border border-[#F0F0F0] dark:border-[#333] rounded-lg">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-l-lg">
                 <Minus className="w-4 h-4" />
               </button>
@@ -208,13 +208,13 @@ export default function ProductDetailPage() {
               {adding ? 'Adding...' : 'Add to Cart'}
             </button>
             <button onClick={toggleWishlist}
-              className={`p-3 rounded-xl border ${inWishlist ? 'bg-red-50 border-red-200 text-red-600' : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+              className={`p-3 rounded-xl border ${inWishlist ? 'bg-red-50 border-red-200 text-red-600' : 'border-[#F0F0F0] dark:border-[#333] hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
               <Heart className={`w-5 h-5 ${inWishlist ? 'fill-red-600' : ''}`} />
             </button>
           </div>
 
           {/* Vendor Info */}
-          <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+          <div className="flex items-center gap-3 p-4 bg-[#F5F5F7] dark:bg-[#1A1A1A] rounded-xl">
             {vendor?.logo_url ? (
               <img src={vendor.logo_url} alt="" className="w-10 h-10 rounded-full object-cover" />
             ) : (
@@ -234,7 +234,7 @@ export default function ProductDetailPage() {
       {product.description && (
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-4">Description</h2>
-          <div className="prose prose-sm dark:prose-invert max-w-none bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="prose prose-sm dark:prose-invert max-w-none bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
             <p className="whitespace-pre-wrap">{product.description}</p>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default function ProductDetailPage() {
         </div>
 
         {showReviewForm && (
-          <form onSubmit={submitReview} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 mb-6 space-y-4">
+          <form onSubmit={submitReview} className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 mb-6 space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2">Rating</label>
               <StarRating rating={reviewRating} size="lg" interactive onChange={setReviewRating} />
@@ -261,12 +261,12 @@ export default function ProductDetailPage() {
             <div>
               <label className="block text-sm font-medium mb-1">Title</label>
               <input type="text" value={reviewTitle} onChange={(e) => setReviewTitle(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                className="w-full px-4 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Comment</label>
               <textarea value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} rows={3}
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                className="w-full px-4 py-2 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm" />
             </div>
             <button type="submit" className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium">Submit Review</button>
           </form>
@@ -277,7 +277,7 @@ export default function ProductDetailPage() {
             <p className="text-center py-8 text-gray-500">No reviews yet. Be the first to review!</p>
           ) : (
             reviews.map((r) => (
-              <div key={r.id} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+              <div key={r.id} className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xs font-medium text-[#F57224]">

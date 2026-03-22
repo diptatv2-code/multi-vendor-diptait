@@ -50,13 +50,13 @@ export default function WishlistPage() {
           {products.map((product) => {
             const img = product.images?.find((i) => i.is_primary) || product.images?.[0];
             return (
-              <div key={product.id} className="bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 group relative">
+              <div key={product.id} className="bg-white dark:bg-[#1A1A1A] rounded-xl overflow-hidden border border-[#F0F0F0] dark:border-[#222] group relative">
                 <button onClick={() => { remove(product.id); toast({ title: 'Removed from wishlist', type: 'info' }); }}
                   className="absolute top-2 right-2 z-10 p-1.5 bg-white dark:bg-gray-800 rounded-full shadow-sm text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Trash2 className="w-4 h-4" />
                 </button>
                 <Link href={`/products/${product.slug}`}>
-                  <div className="aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                  <div className="aspect-square bg-[#F5F5F7] dark:bg-[#1A1A1A] overflow-hidden">
                     {img ? (
                       <img src={img.url} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     ) : (

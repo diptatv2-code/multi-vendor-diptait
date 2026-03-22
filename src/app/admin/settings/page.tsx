@@ -51,7 +51,7 @@ export default function AdminSettingsPage() {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 space-y-6">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 space-y-6">
         {fields.map((field) => (
           <div key={field.key}>
             <label className="block text-sm font-medium mb-1.5">{field.label}</label>

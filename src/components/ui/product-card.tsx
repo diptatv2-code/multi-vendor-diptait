@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { Heart, ShoppingCart, Star, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useCart } from '@/components/cart-provider';
@@ -16,10 +15,10 @@ interface ProductCardProps {
   compareAtPrice?: number | null;
   imageUrl?: string | null;
   vendorName?: string;
-  priority?: boolean;
   rating: number;
   ratingCount: number;
   totalSold?: number;
+  priority?: boolean;
 }
 
 export function ProductCard({
@@ -30,88 +29,75 @@ export function ProductCard({
   const inWishlist = isInWishlist(id);
 
   const discount = compareAtPrice && compareAtPrice > price
-    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
-    : 0;
+    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100) : 0;
 
   async function handleAddToCart(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    const result = await addToCart(id, 1);
-    if (result.error) {
-      toast({ title: 'Error', description: result.error, type: 'error' });
-    } else {
-      toast({ title: 'Added to cart!', type: 'success' });
-    }
+    e.preventDefault(); e.stopPropagation();
+    await addToCart(id, 1);
+    toast({ title: 'Added to cart!', type: 'success' });
   }
 
   function handleWishlist(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); e.stopPropagation();
     toggle(id);
     toast({ title: inWishlist ? 'Removed from wishlist' : 'Added to wishlist!', type: inWishlist ? 'info' : 'success' });
   }
 
   return (
     <Link href={`/products/${slug}`}
-      className="product-card group bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 relative flex flex-col">
+      className="product-card group bg-white dark:bg-[#1A1A1A] rounded-lg border border-transparent hover:border-[#F0F0F0] dark:hover:border-[#333] relative flex flex-col overflow-hidden">
+
       {discount > 0 && (
-        <div className="absolute top-2 left-2 z-10 bg-[#F57224] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">
+        <div className="absolute top-3 left-3 z-10 bg-[#F57224] text-white text-[10px] font-bold px-2 py-0.5 rounded">
           -{discount}%
         </div>
       )}
 
       <button onClick={handleWishlist}
-        className={`absolute top-2 right-2 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-all ${
-          inWishlist ? 'bg-red-50 text-red-500' : 'bg-white/90 dark:bg-gray-800/90 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-red-500'
+        className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+          inWishlist ? 'bg-red-50 text-red-500 dark:bg-red-900/30' : 'bg-white/80 dark:bg-[#222]/80 text-[#86868B] opacity-0 group-hover:opacity-100 hover:text-red-500'
         }`}>
         <Heart className={`w-4 h-4 ${inWishlist ? 'fill-red-500' : ''}`} />
       </button>
 
-      <div className="aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden relative">
+      {/* Image */}
+      <div className="aspect-[4/5] bg-[#F5F5F7] dark:bg-[#1A1A1A] overflow-hidden flex items-center justify-center p-4">
         {imageUrl ? (
-          <Image src={imageUrl} alt={name} width={300} height={300} priority={priority}
-            className="product-img w-full h-full object-cover transition-transform duration-300"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'; }}
-            unoptimized />
+          <img src={imageUrl} alt={name} loading={priority ? 'eager' : 'lazy'}
+            className="product-img max-w-full max-h-full object-contain transition-transform duration-300"
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'; }} />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
-            <ShoppingBag className="w-12 h-12 text-gray-300" />
-          </div>
+          <ShoppingBag className="w-12 h-12 text-[#E8E8E8]" />
         )}
-        {/* Add to Cart overlay - visible on hover (desktop), always on mobile */}
-        <div className="absolute bottom-0 left-0 right-0 p-2 md:p-3 bg-gradient-to-t from-black/60 to-transparent md:cart-overlay md:opacity-0 md:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
-          <button onClick={handleAddToCart}
-            className="w-full flex items-center justify-center gap-2 bg-[#F57224] hover:bg-[#e0621a] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
-            <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
-          </button>
-        </div>
       </div>
 
-      <div className="p-3 flex-1 flex flex-col">
-        {vendorName && (
-          <p className="text-[11px] text-gray-400 mb-1 truncate">{vendorName}</p>
-        )}
-        <h3 className="text-sm font-medium line-clamp-2 mb-2 flex-1 text-gray-800 dark:text-gray-200 leading-snug">
+      {/* Hover add to cart */}
+      <div className="hover-action absolute bottom-[88px] left-3 right-3 z-10">
+        <button onClick={handleAddToCart}
+          className="w-full flex items-center justify-center gap-2 bg-[#1D1D1F] hover:bg-[#333] text-white text-xs font-medium py-2.5 rounded-lg transition-colors">
+          <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+        </button>
+      </div>
+
+      {/* Info */}
+      <div className="p-3 pt-2 flex-1 flex flex-col">
+        <h3 className="text-[13px] font-normal line-clamp-2 mb-1.5 text-[#1D1D1F] dark:text-[#F5F5F7] leading-snug min-h-[36px]">
           {name}
         </h3>
 
-        <div className="flex items-center gap-1 mb-2">
+        <div className="flex items-center gap-1 mb-1.5">
           <div className="flex">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className={`w-3 h-3 ${i < Math.round(rating) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200 dark:fill-gray-600 dark:text-gray-600'}`} />
+              <Star key={i} className={`w-3 h-3 ${i < Math.round(rating) ? 'fill-[#F5A623] text-[#F5A623]' : 'fill-[#E8E8E8] text-[#E8E8E8]'}`} />
             ))}
           </div>
-          <span className="text-[11px] text-gray-400">({ratingCount})</span>
-          {totalSold !== undefined && totalSold > 0 && (
-            <span className="text-[11px] text-gray-400 ml-auto">{totalSold} sold</span>
-          )}
+          <span className="text-[11px] text-[#86868B]">({ratingCount})</span>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-base font-bold text-[#F57224]">{formatPrice(price)}</span>
+        <div className="flex items-baseline gap-2 mt-auto">
+          <span className="text-sm font-semibold text-[#F57224]">{formatPrice(price)}</span>
           {compareAtPrice && compareAtPrice > price && (
-            <span className="text-xs text-gray-400 line-through">{formatPrice(compareAtPrice)}</span>
+            <span className="text-xs text-[#86868B] line-through">{formatPrice(compareAtPrice)}</span>
           )}
         </div>
       </div>

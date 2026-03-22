@@ -87,9 +87,9 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {cards.map((card) => (
-          <div key={card.label} className="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
+          <div key={card.label} className="bg-white dark:bg-[#111] rounded-xl p-6 border border-[#F0F0F0] dark:border-[#222]">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm text-gray-500">{card.label}</span>
+              <span className="text-sm text-[#86868B]">{card.label}</span>
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${card.color}`}>
                 <card.icon className="w-5 h-5" />
               </div>
@@ -100,15 +100,15 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#F0F0F0] dark:border-[#222]">
           <h2 className="font-semibold">Recent Orders</h2>
           <Link href="/admin/orders" className="text-sm text-[#F57224] hover:underline">View all</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Order</th>
                 <th className="px-6 py-3 font-medium">Customer</th>
                 <th className="px-6 py-3 font-medium">Vendor</th>
@@ -119,16 +119,16 @@ export default function AdminDashboard() {
             </thead>
             <tbody>
               {recentOrders.length === 0 ? (
-                <tr><td colSpan={6} className="px-6 py-8 text-center text-gray-500">No orders yet</td></tr>
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-[#86868B]">No orders yet</td></tr>
               ) : (
                 recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                  <tr key={order.id} className="border-b border-[#F0F0F0] dark:border-[#222] hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]/50">
                     <td className="px-6 py-3 font-medium">{order.order_number}</td>
                     <td className="px-6 py-3">{(order.customer as unknown as { full_name: string })?.full_name || 'N/A'}</td>
                     <td className="px-6 py-3">{(order.vendor as unknown as { business_name: string })?.business_name || 'N/A'}</td>
                     <td className="px-6 py-3">{formatPrice(order.total)}</td>
                     <td className="px-6 py-3"><Badge status={order.status} /></td>
-                    <td className="px-6 py-3 text-gray-500">{formatDate(order.created_at)}</td>
+                    <td className="px-6 py-3 text-[#86868B]">{formatDate(order.created_at)}</td>
                   </tr>
                 ))
               )}

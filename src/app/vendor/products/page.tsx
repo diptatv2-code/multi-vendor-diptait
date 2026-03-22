@@ -51,7 +51,7 @@ export default function VendorProductsPage() {
         </Link>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-x-auto">
+      <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] overflow-x-auto">
         {products.length === 0 ? (
           <EmptyState
             icon={<Package className="w-8 h-8 text-gray-400" />}
@@ -66,7 +66,7 @@ export default function VendorProductsPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 dark:border-gray-800 text-left text-gray-500">
+              <tr className="border-b border-[#F0F0F0] dark:border-[#222] text-left text-[#86868B]">
                 <th className="px-6 py-3 font-medium">Product</th>
                 <th className="px-6 py-3 font-medium">Category</th>
                 <th className="px-6 py-3 font-medium">Price</th>
@@ -79,7 +79,7 @@ export default function VendorProductsPage() {
               {products.map((p) => {
                 const img = p.images?.find((i) => i.is_primary) || p.images?.[0];
                 return (
-                  <tr key={p.id} className="border-b border-gray-100 dark:border-gray-800">
+                  <tr key={p.id} className="border-b border-[#F0F0F0] dark:border-[#222]">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {img ? (
@@ -92,7 +92,7 @@ export default function VendorProductsPage() {
                         <p className="font-medium line-clamp-1">{p.name}</p>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-500">{(p.category as unknown as { name: string })?.name || '-'}</td>
+                    <td className="px-6 py-4 text-[#86868B]">{(p.category as unknown as { name: string })?.name || '-'}</td>
                     <td className="px-6 py-4">{formatPrice(p.price)}</td>
                     <td className="px-6 py-4">
                       <span className={p.stock_quantity <= p.low_stock_threshold ? 'text-red-600 font-medium' : ''}>
@@ -102,7 +102,7 @@ export default function VendorProductsPage() {
                     <td className="px-6 py-4"><Badge status={p.status} /></td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-1">
-                        <Link href={`/vendor/products/${p.id}/edit`} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <Link href={`/vendor/products/${p.id}/edit`} className="p-1.5 rounded-lg hover:bg-[#F5F5F7] dark:hover:bg-[#1A1A1A]">
                           <Pencil className="w-4 h-4" />
                         </Link>
                         <button onClick={() => deleteProduct(p.id)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-600">

@@ -50,7 +50,7 @@ export default function OrdersPage() {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <div key={order.id} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+            <div key={order.id} className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <p className="font-bold">{order.order_number}</p>
@@ -81,7 +81,7 @@ export default function OrdersPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex items-center justify-between pt-4 border-t border-[#F0F0F0] dark:border-[#222]">
                 <span className="font-bold">{formatPrice(order.total)}</span>
                 <button onClick={() => viewOrder(order)} className="text-sm text-[#F57224] font-medium hover:underline">
                   View Details
@@ -109,7 +109,7 @@ export default function OrdersPage() {
                     <span>{formatPrice(item.total)}</span>
                   </div>
                 ))}
-                <div className="pt-2 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold">
+                <div className="pt-2 border-t border-[#F0F0F0] dark:border-[#333] flex justify-between font-bold">
                   <span>Total</span>
                   <span>{formatPrice(selectedOrder.total)}</span>
                 </div>

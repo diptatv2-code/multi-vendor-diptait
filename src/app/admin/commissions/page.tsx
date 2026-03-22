@@ -55,14 +55,14 @@ export default function AdminCommissionsPage() {
       <h1 className="text-2xl font-bold mb-6">Commission Settings</h1>
 
       <div className="space-y-6">
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <div>
               <h2 className="font-semibold">Default Commission Rate</h2>
-              <p className="text-sm text-gray-500">Applied to all vendors unless overridden</p>
+              <p className="text-sm text-[#86868B]">Applied to all vendors unless overridden</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -76,7 +76,7 @@ export default function AdminCommissionsPage() {
                 step={0.5}
                 className="w-full px-4 py-2 pr-8 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">%</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#86868B] text-sm">%</span>
             </div>
             <button onClick={saveDefaultRate} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
               <Save className="w-4 h-4" /> Save
@@ -84,19 +84,19 @@ export default function AdminCommissionsPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-800">
+        <div className="bg-white dark:bg-[#111] rounded-xl border border-[#F0F0F0] dark:border-[#222]">
+          <div className="px-6 py-4 border-b border-[#F0F0F0] dark:border-[#222]">
             <h2 className="font-semibold">Per-Vendor Commission Rates</h2>
           </div>
           {vendors.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">No approved vendors</div>
+            <div className="p-8 text-center text-[#86868B]">No approved vendors</div>
           ) : (
             <div className="divide-y divide-gray-200 dark:divide-gray-800">
               {vendors.map((v) => (
                 <div key={v.id} className="flex items-center justify-between px-6 py-4">
                   <div>
                     <p className="font-medium">{v.business_name}</p>
-                    <p className="text-xs text-gray-500">Current: {v.commission_rate}%</p>
+                    <p className="text-xs text-[#86868B]">Current: {v.commission_rate}%</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="relative w-24">
@@ -109,7 +109,7 @@ export default function AdminCommissionsPage() {
                         step={0.5}
                         className="w-full px-3 py-1.5 pr-7 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm"
                       />
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">%</span>
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[#86868B] text-xs">%</span>
                     </div>
                     <button onClick={() => saveVendorRate(v.id)} className="p-1.5 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-[#F57224] hover:bg-indigo-200">
                       <Save className="w-4 h-4" />

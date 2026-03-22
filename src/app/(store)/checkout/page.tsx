@@ -219,60 +219,60 @@ export default function CheckoutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           {/* Customer Details */}
-          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
             <h2 className="font-semibold mb-4">Your Details (আপনার তথ্য)</h2>
             <div className="space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">Full Name / নাম *</label>
                   <input type="text" value={form.full_name} onChange={(e) => updateForm('full_name', e.target.value)} placeholder="আপনার নাম"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">Phone / ফোন *</label>
                   <input type="tel" value={form.phone} onChange={(e) => updateForm('phone', e.target.value)} placeholder="01XXXXXXXXX"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Email (optional)</label>
                 <input type="email" value={form.email} onChange={(e) => updateForm('email', e.target.value)} placeholder="your@email.com"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                  className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">Full Address / ঠিকানা *</label>
                 <input type="text" value={form.address} onChange={(e) => updateForm('address', e.target.value)} placeholder="বাড়ি, রোড, এলাকা"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                  className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">Area / এলাকা</label>
                   <input type="text" value={form.area} onChange={(e) => updateForm('area', e.target.value)} placeholder="Dhanmondi"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">City / শহর *</label>
                   <input type="text" value={form.city} onChange={(e) => updateForm('city', e.target.value)} placeholder="Dhaka"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">District / জেলা</label>
                   <input type="text" value={form.district} onChange={(e) => updateForm('district', e.target.value)} placeholder="Dhaka"
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                    className="w-full px-4 py-2.5 rounded-lg border border-[#F0F0F0] dark:border-[#333] bg-[#F5F5F7] dark:bg-[#1A1A1A] text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] dark:focus:ring-[#555]" />
                 </div>
               </div>
             </div>
           </div>
 
           {/* Delivery Zone */}
-          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
             <div className="flex items-center gap-2 mb-4">
               <Truck className="w-5 h-5 text-[#F57224]" />
               <h2 className="font-semibold">Delivery Zone</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {DELIVERY_ZONES.map((zone) => (
-                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${deliveryZone === zone.value ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${deliveryZone === zone.value ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-[#F0F0F0] dark:border-[#333]'}`}>
                   <div className="flex items-center gap-3">
                     <input type="radio" name="zone" checked={deliveryZone === zone.value} onChange={() => setDeliveryZone(zone.value)} className="accent-[#F57224]" />
                     <span className="text-sm font-medium">{zone.label}</span>
@@ -284,7 +284,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Payment */}
-          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
             <div className="flex items-center gap-2 mb-4">
               <Banknote className="w-5 h-5 text-green-600" />
               <h2 className="font-semibold">Payment</h2>
@@ -299,7 +299,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Items */}
-          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6">
             <h2 className="font-semibold mb-4">Items ({items.length})</h2>
             <div className="space-y-3">
               {items.map((item) => {
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
 
         {/* Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24">
+          <div className="bg-white dark:bg-[#1A1A1A] rounded-xl border border-[#F0F0F0] dark:border-[#222] p-6 sticky top-24">
             <h2 className="font-semibold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm mb-6">
               <div className="flex justify-between">
@@ -335,7 +335,7 @@ export default function CheckoutPage() {
                 <span className="text-gray-500">Delivery</span>
                 <span>{formatPrice(deliveryFee)}</span>
               </div>
-              <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-lg">
+              <div className="pt-3 border-t border-[#F0F0F0] dark:border-[#333] flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-[#F57224]">{formatPrice(grandTotal)}</span>
               </div>
