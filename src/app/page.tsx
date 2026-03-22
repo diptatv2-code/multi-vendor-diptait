@@ -60,21 +60,21 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex-1 rounded-2xl overflow-hidden relative min-h-[140px]">
-                <Image src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop" alt="" fill className="object-cover" sizes="33vw" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#6C3CE1]/90 to-[#6C3CE1]/60" />
+                <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=500&h=300&fit=crop" alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#6C3CE1]/75 to-[#6C3CE1]/50" />
                 <div className="relative p-6 text-white flex flex-col justify-center h-full">
-                  <Truck className="w-8 h-8 mb-2" />
-                  <h3 className="text-lg font-bold">Fast Delivery</h3>
-                  <p className="text-sm text-white/80">Dhaka ৳70 | Outside ৳130</p>
+                  <Truck className="w-8 h-8 mb-2 drop-shadow" />
+                  <h3 className="text-lg font-bold drop-shadow">Fast Delivery</h3>
+                  <p className="text-sm text-white/90 drop-shadow">Dhaka ৳70 | Outside ৳130</p>
                 </div>
               </div>
               <div className="flex-1 rounded-2xl overflow-hidden relative min-h-[140px]">
-                <Image src="https://images.unsplash.com/photo-1556742111-a301076d9d18?w=500&h=300&fit=crop" alt="" fill className="object-cover" sizes="33vw" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#00b894]/90 to-[#00b894]/60" />
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop" alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#00b894]/75 to-[#00b894]/50" />
                 <div className="relative p-6 text-white flex flex-col justify-center h-full">
-                  <Banknote className="w-8 h-8 mb-2" />
-                  <h3 className="text-lg font-bold">Cash on Delivery</h3>
-                  <p className="text-sm text-white/80">Pay when you receive</p>
+                  <Banknote className="w-8 h-8 mb-2 drop-shadow" />
+                  <h3 className="text-lg font-bold drop-shadow">Cash on Delivery</h3>
+                  <p className="text-sm text-white/90 drop-shadow">Pay when you receive</p>
                 </div>
               </div>
             </div>

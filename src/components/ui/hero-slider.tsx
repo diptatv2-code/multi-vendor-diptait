@@ -46,8 +46,9 @@ export function HeroSlider() {
     <div className="relative rounded-2xl overflow-hidden min-h-[300px] md:min-h-[380px]">
       {/* Background image */}
       <div className="absolute inset-0">
-        <Image src={slide.image} alt="" fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" />
-        <div className={`absolute inset-0 bg-gradient-to-r ${slide.bg} opacity-85`} />
+        <Image src={slide.image} alt="" fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw"
+          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} unoptimized />
+        <div className={`absolute inset-0 bg-gradient-to-r ${slide.bg} opacity-70`} />
       </div>
 
       {/* Content */}

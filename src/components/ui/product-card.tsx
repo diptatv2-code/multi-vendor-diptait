@@ -71,10 +71,12 @@ export function ProductCard({
         {imageUrl ? (
           <Image src={imageUrl} alt={name} width={300} height={300} priority={priority}
             className="product-img w-full h-full object-cover transition-transform duration-300"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'; }}
+            unoptimized />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <ShoppingBag className="w-12 h-12 text-gray-200" />
+          <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+            <ShoppingBag className="w-12 h-12 text-gray-300" />
           </div>
         )}
         {/* Add to Cart overlay - visible on hover (desktop), always on mobile */}
