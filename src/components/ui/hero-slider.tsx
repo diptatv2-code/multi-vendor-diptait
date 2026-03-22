@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
@@ -45,7 +46,7 @@ export function HeroSlider() {
     <div className="relative rounded-2xl overflow-hidden min-h-[300px] md:min-h-[380px]">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img src={slide.image} alt="" className="w-full h-full object-cover transition-opacity duration-500" />
+        <Image src={slide.image} alt="" fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" />
         <div className={`absolute inset-0 bg-gradient-to-r ${slide.bg} opacity-85`} />
       </div>
 

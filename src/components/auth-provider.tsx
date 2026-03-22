@@ -59,10 +59,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function signOut() {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch {
+      // ignore signout errors
+    }
     setUser(null);
     setProfile(null);
-    window.location.href = '/';
+    // Clear localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('mv_cart');
+      localStorage.removeItem('mv_wishlist');
+    }
+    window.location.href = '/login';
   }
 
   return (

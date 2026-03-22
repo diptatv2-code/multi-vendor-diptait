@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Heart, ShoppingCart, Star, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useCart } from '@/components/cart-provider';
@@ -15,13 +16,14 @@ interface ProductCardProps {
   compareAtPrice?: number | null;
   imageUrl?: string | null;
   vendorName?: string;
+  priority?: boolean;
   rating: number;
   ratingCount: number;
   totalSold?: number;
 }
 
 export function ProductCard({
-  id, slug, name, price, compareAtPrice, imageUrl, vendorName, rating, ratingCount, totalSold,
+  id, slug, name, price, compareAtPrice, imageUrl, vendorName, rating, ratingCount, totalSold, priority = false,
 }: ProductCardProps) {
   const { addToCart } = useCart();
   const { isInWishlist, toggle } = useWishlist();
@@ -67,7 +69,9 @@ export function ProductCard({
 
       <div className="aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden relative">
         {imageUrl ? (
-          <img src={imageUrl} alt={name} className="product-img w-full h-full object-cover transition-transform duration-300" loading="lazy" />
+          <Image src={imageUrl} alt={name} width={300} height={300} priority={priority}
+            className="product-img w-full h-full object-cover transition-transform duration-300"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <ShoppingBag className="w-12 h-12 text-gray-200" />

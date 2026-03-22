@@ -78,7 +78,7 @@ export default function AdminDashboard() {
     { label: 'Total Products', value: stats!.totalProducts, icon: Package, color: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30', sub: `${stats!.pendingProducts} pending` },
     { label: 'Total Vendors', value: stats!.totalVendors, icon: Store, color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30', sub: `${stats!.pendingVendors} pending` },
     { label: 'Total Users', value: stats!.totalUsers, icon: Users, color: 'text-[#F57224] bg-orange-100 dark:bg-orange-900/30' },
-    { label: 'Avg Order Value', value: stats!.totalOrders > 0 ? formatPrice(stats!.totalRevenue / stats!.totalOrders) : '$0', icon: TrendingUp, color: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30' },
+    { label: 'Avg Order Value', value: stats!.totalOrders > 0 ? formatPrice(stats!.totalRevenue / stats!.totalOrders) : '৳0', icon: TrendingUp, color: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30' },
   ];
 
   return (

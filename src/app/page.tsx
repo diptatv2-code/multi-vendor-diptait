@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/ui/product-card';
@@ -59,7 +60,7 @@ export default async function HomePage() {
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex-1 rounded-2xl overflow-hidden relative min-h-[140px]">
-                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop" alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <Image src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop" alt="" fill className="object-cover" sizes="33vw" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#6C3CE1]/90 to-[#6C3CE1]/60" />
                 <div className="relative p-6 text-white flex flex-col justify-center h-full">
                   <Truck className="w-8 h-8 mb-2" />
@@ -68,7 +69,7 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="flex-1 rounded-2xl overflow-hidden relative min-h-[140px]">
-                <img src="https://images.unsplash.com/photo-1556742111-a301076d9d18?w=500&h=300&fit=crop" alt="" className="absolute inset-0 w-full h-full object-cover" />
+                <Image src="https://images.unsplash.com/photo-1556742111-a301076d9d18?w=500&h=300&fit=crop" alt="" fill className="object-cover" sizes="33vw" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#00b894]/90 to-[#00b894]/60" />
                 <div className="relative p-6 text-white flex flex-col justify-center h-full">
                   <Banknote className="w-8 h-8 mb-2" />
@@ -157,7 +158,7 @@ export default async function HomePage() {
             <div className="text-center py-16 text-gray-500">No products yet.</div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {products?.map((p: Record<string, unknown>) => {
+              {products?.map((p: Record<string, unknown>, idx: number) => {
                 const imgs = p.images as { url: string; is_primary: boolean }[] | undefined;
                 const img = imgs?.find((i) => i.is_primary) || imgs?.[0];
                 const vendor = p.vendor as { business_name: string } | undefined;
@@ -174,6 +175,7 @@ export default async function HomePage() {
                     rating={p.rating as number}
                     ratingCount={p.rating_count as number}
                     totalSold={p.total_sold as number}
+                    priority={idx < 4}
                   />
                 );
               })}
