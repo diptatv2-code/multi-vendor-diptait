@@ -3,6 +3,9 @@
 import Link from 'next/link';
 import { Heart, ShoppingCart, Star, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
+import { useCart } from '@/hooks/use-cart';
+import { useWishlist } from '@/hooks/use-wishlist';
+import { toast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   id: string;
@@ -18,29 +21,50 @@ interface ProductCardProps {
 }
 
 export function ProductCard({
-  slug, name, price, compareAtPrice, imageUrl, vendorName, rating, ratingCount, totalSold,
+  id, slug, name, price, compareAtPrice, imageUrl, vendorName, rating, ratingCount, totalSold,
 }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const { isInWishlist, toggle } = useWishlist();
+  const inWishlist = isInWishlist(id);
+
   const discount = compareAtPrice && compareAtPrice > price
     ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
     : 0;
 
+  async function handleAddToCart(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const result = await addToCart(id, 1);
+    if (result.error) {
+      toast({ title: 'Error', description: result.error, type: 'error' });
+    } else {
+      toast({ title: 'Added to cart!', type: 'success' });
+    }
+  }
+
+  function handleWishlist(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    toggle(id);
+    toast({ title: inWishlist ? 'Removed from wishlist' : 'Added to wishlist!', type: inWishlist ? 'info' : 'success' });
+  }
+
   return (
     <Link href={`/products/${slug}`}
       className="product-card group bg-white dark:bg-[#1e1e1e] rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-xl transition-all duration-300 relative flex flex-col">
-      {/* Discount badge */}
       {discount > 0 && (
         <div className="absolute top-2 left-2 z-10 bg-[#F57224] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">
           -{discount}%
         </div>
       )}
 
-      {/* Wishlist */}
-      <button className="absolute top-2 right-2 z-10 w-8 h-8 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500"
-        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-        <Heart className="w-4 h-4" />
+      <button onClick={handleWishlist}
+        className={`absolute top-2 right-2 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-all ${
+          inWishlist ? 'bg-red-50 text-red-500' : 'bg-white/90 dark:bg-gray-800/90 text-gray-400 opacity-0 group-hover:opacity-100 hover:text-red-500'
+        }`}>
+        <Heart className={`w-4 h-4 ${inWishlist ? 'fill-red-500' : ''}`} />
       </button>
 
-      {/* Image */}
       <div className="aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden relative">
         {imageUrl ? (
           <img src={imageUrl} alt={name} className="product-img w-full h-full object-cover transition-transform duration-300" loading="lazy" />
@@ -49,15 +73,15 @@ export function ProductCard({
             <ShoppingBag className="w-12 h-12 text-gray-200" />
           </div>
         )}
-        {/* Add to Cart overlay */}
-        <div className="cart-overlay absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent">
-          <div className="flex items-center justify-center gap-2 text-white text-xs font-medium">
-            <ShoppingCart className="w-4 h-4" /> Add to Cart
-          </div>
+        {/* Add to Cart overlay - visible on hover (desktop), always on mobile */}
+        <div className="absolute bottom-0 left-0 right-0 p-2 md:p-3 bg-gradient-to-t from-black/60 to-transparent md:cart-overlay md:opacity-0 md:translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
+          <button onClick={handleAddToCart}
+            className="w-full flex items-center justify-center gap-2 bg-[#F57224] hover:bg-[#e0621a] text-white text-xs font-semibold py-2 rounded-lg transition-colors">
+            <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
+          </button>
         </div>
       </div>
 
-      {/* Info */}
       <div className="p-3 flex-1 flex flex-col">
         {vendorName && (
           <p className="text-[11px] text-gray-400 mb-1 truncate">{vendorName}</p>
@@ -66,7 +90,6 @@ export function ProductCard({
           {name}
         </h3>
 
-        {/* Rating */}
         <div className="flex items-center gap-1 mb-2">
           <div className="flex">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -79,7 +102,6 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Price */}
         <div className="flex items-center gap-2">
           <span className="text-base font-bold text-[#F57224]">{formatPrice(price)}</span>
           {compareAtPrice && compareAtPrice > price && (

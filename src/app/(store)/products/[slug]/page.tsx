@@ -139,18 +139,19 @@ export default function ProductDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         {/* Images */}
         <div>
-          <div className="aspect-square rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 mb-4">
+          <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 mb-4 group/zoom cursor-crosshair relative">
             {images[selectedImage] ? (
-              <img src={images[selectedImage].url} alt={product.name} className="w-full h-full object-cover" />
+              <img src={images[selectedImage].url} alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-200 group-hover/zoom:scale-150 origin-center" />
             ) : (
               <div className="w-full h-full flex items-center justify-center"><Package className="w-16 h-16 text-gray-300" /></div>
             )}
           </div>
           {images.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto">
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
               {images.map((img, i) => (
                 <button key={img.id} onClick={() => setSelectedImage(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${i === selectedImage ? 'border-[#F57224]' : 'border-transparent'}`}>
+                  className={`w-20 h-20 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${i === selectedImage ? 'border-[#F57224] ring-2 ring-[#F57224]/20' : 'border-gray-200 dark:border-gray-700 hover:border-[#F57224]'}`}>
                   <img src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}

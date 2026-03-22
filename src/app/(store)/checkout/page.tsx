@@ -1,88 +1,136 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { useAuth } from '@/components/auth-provider';
 import { useCart } from '@/hooks/use-cart';
 import { formatPrice, generateOrderNumber } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { DELIVERY_ZONES } from '@/lib/constants';
-import { Truck, Banknote } from 'lucide-react';
-import type { Address } from '@/lib/types';
+import { Truck, Banknote, CheckCircle, ShoppingBag } from 'lucide-react';
+import Link from 'next/link';
 
 export default function CheckoutPage() {
-  const { user } = useAuth();
   const { items, totalPrice, itemsByVendor, clearCart } = useCart();
   const router = useRouter();
-  const [addresses, setAddresses] = useState<Address[]>([]);
-  const [selectedAddress, setSelectedAddress] = useState('');
   const [placing, setPlacing] = useState(false);
   const [deliveryZone, setDeliveryZone] = useState('inside_dhaka');
-  const [newAddress, setNewAddress] = useState({
-    full_name: '', phone: '', address_line1: '', address_line2: '',
-    city: 'Dhaka', state: '', postal_code: '', country: 'Bangladesh',
+  const [form, setForm] = useState({
+    full_name: '', phone: '', email: '', address: '', city: 'Dhaka', district: '', area: '',
   });
-  const [showNewAddress, setShowNewAddress] = useState(false);
 
   const deliveryFee = DELIVERY_ZONES.find((z) => z.value === deliveryZone)?.fee || 70;
   const grandTotal = totalPrice + deliveryFee;
 
-  useEffect(() => {
-    if (!user) return;
-    async function fetch() {
-      const supabase = createClient();
-      const { data } = await supabase.from('addresses').select('*').eq('user_id', user!.id).order('is_default', { ascending: false });
-      setAddresses(data || []);
-      const def = data?.find((a) => a.is_default);
-      if (def) setSelectedAddress(def.id);
-      else if (!data?.length) setShowNewAddress(true);
-    }
-    fetch();
-  }, [user]);
+  function updateForm(key: string, value: string) {
+    setForm({ ...form, [key]: value });
+  }
 
   async function handlePlaceOrder() {
-    if (!user) return;
-
-    // Validate address
-    if (showNewAddress) {
-      if (!newAddress.full_name || !newAddress.phone || !newAddress.address_line1 || !newAddress.city) {
-        toast({ title: 'Please fill in all required address fields', type: 'error' });
-        return;
-      }
-    } else if (!selectedAddress) {
-      toast({ title: 'Please select a delivery address', type: 'error' });
+    if (!form.full_name || !form.phone || !form.address || !form.city) {
+      toast({ title: 'Please fill in all required fields', type: 'error' });
+      return;
+    }
+    if (items.length === 0) {
+      toast({ title: 'Your cart is empty', type: 'error' });
       return;
     }
 
     setPlacing(true);
     const supabase = createClient();
 
-    let shippingAddress: Record<string, string> = {};
+    // Check if user is already logged in
+    let { data: { user } } = await supabase.auth.getUser();
 
-    if (showNewAddress) {
-      const { data: addr } = await supabase.from('addresses').insert({
-        user_id: user.id,
-        label: 'Default',
-        ...newAddress,
-        is_default: addresses.length === 0,
-      }).select().single();
-      if (addr) shippingAddress = { ...newAddress, delivery_zone: deliveryZone };
-    } else {
-      const addr = addresses.find((a) => a.id === selectedAddress);
-      if (addr) {
-        shippingAddress = {
-          full_name: addr.full_name, phone: addr.phone,
-          address_line1: addr.address_line1, address_line2: addr.address_line2 || '',
-          city: addr.city, state: addr.state, postal_code: addr.postal_code, country: addr.country,
-          delivery_zone: deliveryZone,
-        };
+    // If not logged in, auto-create account or sign in
+    if (!user) {
+      const email = form.email || `${form.phone.replace(/\D/g, '')}@guest.multivendor.bd`;
+      const password = form.phone.replace(/\D/g, '');
+
+      // Try sign up first
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: form.full_name, role: 'customer' },
+          emailRedirectTo: undefined,
+        },
+      });
+
+      if (signUpError) {
+        // If user exists, try sign in
+        if (signUpError.message.includes('already registered') || signUpError.message.includes('already been registered')) {
+          const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (signInError) {
+            toast({ title: 'Account exists with different password', description: 'Please login first or use a different phone/email', type: 'error' });
+            setPlacing(false);
+            return;
+          }
+          user = signInData.user;
+        } else {
+          toast({ title: 'Error creating account', description: signUpError.message, type: 'error' });
+          setPlacing(false);
+          return;
+        }
+      } else {
+        user = signUpData.user;
+        // Auto-confirm by signing in immediately (works if email confirmation is disabled)
+        if (!user) {
+          const { data: signInData } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          user = signInData.user;
+        }
       }
     }
 
-    // Split order per vendor
+    if (!user) {
+      toast({ title: 'Could not create account. Please try again.', type: 'error' });
+      setPlacing(false);
+      return;
+    }
+
+    // Update profile name/phone if needed
+    await supabase.from('user_profiles').update({
+      full_name: form.full_name,
+      phone: form.phone,
+    }).eq('id', user.id);
+
+    // Save address
+    const shippingAddress = {
+      full_name: form.full_name,
+      phone: form.phone,
+      email: form.email,
+      address: form.address,
+      area: form.area,
+      city: form.city,
+      district: form.district,
+      delivery_zone: deliveryZone,
+    };
+
+    // Save to addresses table
+    await supabase.from('addresses').insert({
+      user_id: user.id,
+      label: 'Default',
+      full_name: form.full_name,
+      phone: form.phone,
+      address_line1: form.address,
+      address_line2: form.area,
+      city: form.city,
+      state: form.district,
+      postal_code: '',
+      country: 'Bangladesh',
+      is_default: true,
+    });
+
+    // Create orders per vendor
     const vendorCount = Object.keys(itemsByVendor).length;
     const perVendorDeliveryFee = Math.ceil(deliveryFee / vendorCount);
+    const orderNumbers: string[] = [];
 
     for (const [vendorId, vendorItems] of Object.entries(itemsByVendor)) {
       const subtotal = vendorItems.reduce((s, item) => {
@@ -93,9 +141,8 @@ export default function CheckoutPage() {
       const { data: vendor } = await supabase.from('vendor_profiles').select('commission_rate, total_sales, total_revenue').eq('id', vendorId).single();
       const commissionRate = vendor?.commission_rate || 10;
       const commissionAmount = subtotal * (commissionRate / 100);
-
       const orderNumber = generateOrderNumber();
-      const orderTotal = subtotal + perVendorDeliveryFee;
+      orderNumbers.push(orderNumber);
 
       const { data: order, error } = await supabase.from('orders').insert({
         user_id: user.id,
@@ -103,7 +150,7 @@ export default function CheckoutPage() {
         order_number: orderNumber,
         subtotal,
         shipping_fee: perVendorDeliveryFee,
-        total: orderTotal,
+        total: subtotal + perVendorDeliveryFee,
         commission_amount: commissionAmount,
         shipping_address: shippingAddress,
         notes: 'Payment: Cash on Delivery (COD)',
@@ -139,22 +186,38 @@ export default function CheckoutPage() {
         }).eq('id', item.product_id);
       }
 
-      await supabase.from('vendor_profiles').update({
-        total_sales: (vendor?.total_sales || 0) + vendorItems.reduce((s, i) => s + i.quantity, 0),
-        total_revenue: (vendor?.total_revenue || 0) + subtotal,
-      }).eq('id', vendorId);
+      if (vendor) {
+        await supabase.from('vendor_profiles').update({
+          total_sales: (vendor.total_sales || 0) + vendorItems.reduce((s, i) => s + i.quantity, 0),
+          total_revenue: (vendor.total_revenue || 0) + subtotal,
+        }).eq('id', vendorId);
+      }
+    }
+
+    // Sync localStorage cart items to DB then clear
+    for (const item of items) {
+      if (item.id.startsWith('local_')) {
+        await supabase.from('cart_items').insert({
+          user_id: user.id,
+          product_id: item.product_id,
+          variant_id: item.variant_id,
+          quantity: item.quantity,
+        });
+      }
     }
 
     await clearCart();
-    toast({ title: 'Order placed successfully!', description: 'You will pay cash on delivery.', type: 'success' });
+    toast({ title: 'Order placed successfully!', description: `Order: ${orderNumbers.join(', ')}`, type: 'success' });
     router.push('/orders');
+    router.refresh();
   }
 
   if (items.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500 mb-4">Your cart is empty</p>
-        <button onClick={() => router.push('/products')} className="px-6 py-2 bg-[#F57224] text-white rounded-lg">Browse Products</button>
+        <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+        <p className="text-gray-500 mb-4 text-lg">Your cart is empty</p>
+        <Link href="/products" className="px-6 py-2.5 bg-[#F57224] text-white rounded-lg font-medium inline-block hover:bg-[#e0621a]">Browse Products</Link>
       </div>
     );
   }
@@ -165,67 +228,63 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          {/* Shipping Address */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-            <h2 className="font-semibold mb-4">Delivery Address (ডেলিভারি ঠিকানা)</h2>
-
-            {addresses.length > 0 && !showNewAddress && (
-              <div className="space-y-3 mb-4">
-                {addresses.map((addr) => (
-                  <label key={addr.id} className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer ${selectedAddress === addr.id ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
-                    <input type="radio" name="address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
-                    <div>
-                      <p className="font-medium text-sm">{addr.full_name}</p>
-                      <p className="text-sm text-gray-500">{addr.address_line1}{addr.address_line2 ? `, ${addr.address_line2}` : ''}</p>
-                      <p className="text-sm text-gray-500">{addr.city}, {addr.state} {addr.postal_code}</p>
-                      <p className="text-sm text-gray-500">{addr.phone}</p>
-                    </div>
-                  </label>
-                ))}
-                <button onClick={() => setShowNewAddress(true)} className="text-sm text-[#F57224] font-medium hover:underline">
-                  + Add new address
-                </button>
-              </div>
-            )}
-
-            {showNewAddress && (
-              <div className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input type="text" placeholder="Full Name / নাম *" value={newAddress.full_name} onChange={(e) => setNewAddress({ ...newAddress, full_name: e.target.value })} required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="tel" placeholder="Phone / ফোন নম্বর *" value={newAddress.phone} onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })} required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+          {/* Customer Details */}
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+            <h2 className="font-semibold mb-4">Your Details (আপনার তথ্য)</h2>
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Full Name / নাম *</label>
+                  <input type="text" value={form.full_name} onChange={(e) => updateForm('full_name', e.target.value)} required placeholder="আপনার নাম"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
                 </div>
-                <input type="text" placeholder="Full Address / সম্পূর্ণ ঠিকানা *" value={newAddress.address_line1} onChange={(e) => setNewAddress({ ...newAddress, address_line1: e.target.value })} required
-                  className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                <input type="text" placeholder="Area / এলাকা (e.g., Dhanmondi, Mirpur)" value={newAddress.address_line2} onChange={(e) => setNewAddress({ ...newAddress, address_line2: e.target.value })}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <input type="text" placeholder="City / শহর *" value={newAddress.city} onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })} required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="text" placeholder="District / জেলা" value={newAddress.state} onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="text" placeholder="Postal Code / ডাক কোড" value={newAddress.postal_code} onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Phone / ফোন *</label>
+                  <input type="tel" value={form.phone} onChange={(e) => updateForm('phone', e.target.value)} required placeholder="01XXXXXXXXX"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
                 </div>
-                {addresses.length > 0 && (
-                  <button onClick={() => setShowNewAddress(false)} className="text-sm text-gray-500 hover:underline">Use existing address</button>
-                )}
               </div>
-            )}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Email (optional)</label>
+                <input type="email" value={form.email} onChange={(e) => updateForm('email', e.target.value)} placeholder="your@email.com"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">Full Address / ঠিকানা *</label>
+                <input type="text" value={form.address} onChange={(e) => updateForm('address', e.target.value)} required placeholder="বাড়ি নম্বর, রোড, এলাকা"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Area / এলাকা</label>
+                  <input type="text" value={form.area} onChange={(e) => updateForm('area', e.target.value)} placeholder="e.g., Dhanmondi"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">City / শহর *</label>
+                  <input type="text" value={form.city} onChange={(e) => updateForm('city', e.target.value)} required placeholder="Dhaka"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">District / জেলা</label>
+                  <input type="text" value={form.district} onChange={(e) => updateForm('district', e.target.value)} placeholder="Dhaka"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Delivery Zone */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <div className="flex items-center gap-2 mb-4">
               <Truck className="w-5 h-5 text-[#F57224]" />
               <h2 className="font-semibold">Delivery Zone (ডেলিভারি জোন)</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {DELIVERY_ZONES.map((zone) => (
-                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer ${deliveryZone === zone.value ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all ${deliveryZone === zone.value ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'}`}>
                   <div className="flex items-center gap-3">
-                    <input type="radio" name="deliveryZone" checked={deliveryZone === zone.value} onChange={() => setDeliveryZone(zone.value)} />
+                    <input type="radio" name="deliveryZone" checked={deliveryZone === zone.value} onChange={() => setDeliveryZone(zone.value)} className="accent-[#F57224]" />
                     <span className="text-sm font-medium">{zone.label}</span>
                   </div>
                   <span className="text-sm font-bold text-[#F57224]">{formatPrice(zone.fee)}</span>
@@ -234,38 +293,48 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Payment Method */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          {/* Payment */}
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <div className="flex items-center gap-2 mb-4">
               <Banknote className="w-5 h-5 text-green-600" />
-              <h2 className="font-semibold">Payment Method (পেমেন্ট)</h2>
+              <h2 className="font-semibold">Payment (পেমেন্ট)</h2>
             </div>
-            <label className="flex items-center gap-3 p-4 rounded-lg border border-green-300 bg-green-50 dark:bg-green-900/20 dark:border-green-800 cursor-pointer">
-              <input type="radio" checked readOnly />
+            <div className="flex items-center gap-3 p-4 rounded-lg border-2 border-green-300 bg-green-50 dark:bg-green-900/20">
+              <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
                 <p className="text-sm font-medium">Cash on Delivery (ক্যাশ অন ডেলিভারি)</p>
-                <p className="text-xs text-gray-500">Pay when you receive your order</p>
+                <p className="text-xs text-gray-500">Pay {formatPrice(grandTotal)} when you receive your order</p>
               </div>
-            </label>
+            </div>
           </div>
 
           {/* Order Items */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <h2 className="font-semibold mb-4">Order Items ({items.length})</h2>
-            <div className="space-y-3 text-sm">
-              {items.map((item) => (
-                <div key={item.id} className="flex justify-between">
-                  <span className="flex-1">{item.product?.name} <span className="text-gray-400">x {item.quantity}</span></span>
-                  <span className="font-medium">{formatPrice((item.variant?.price || item.product?.price || 0) * item.quantity)}</span>
-                </div>
-              ))}
+            <div className="space-y-3">
+              {items.map((item) => {
+                const img = item.product?.images?.find((i) => i.is_primary) || item.product?.images?.[0];
+                const price = item.variant?.price || item.product?.price || 0;
+                return (
+                  <div key={item.id} className="flex items-center gap-3 text-sm">
+                    <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+                      {img && <img src={(img as unknown as {url:string}).url} alt="" className="w-full h-full object-cover" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{item.product?.name}</p>
+                      <p className="text-gray-400 text-xs">Qty: {item.quantity}</p>
+                    </div>
+                    <span className="font-bold text-[#F57224] shrink-0">{formatPrice(price * item.quantity)}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Order Summary Sidebar */}
+        {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24">
+          <div className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24">
             <h2 className="font-semibold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm mb-6">
               <div className="flex justify-between">
@@ -280,23 +349,17 @@ export default function CheckoutPage() {
                 <span>Payment</span>
                 <span>Cash on Delivery</span>
               </div>
-              {Object.keys(itemsByVendor).length > 1 && (
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Vendors</span>
-                  <span>{Object.keys(itemsByVendor).length} (separate orders)</span>
-                </div>
-              )}
               <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span className="text-[#F57224]">{formatPrice(grandTotal)}</span>
               </div>
             </div>
             <button onClick={handlePlaceOrder} disabled={placing}
-              className="w-full py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a] disabled:opacity-50">
-              {placing ? 'Placing Order...' : 'Place Order (COD)'}
+              className="w-full py-3 bg-[#F57224] text-white rounded-xl font-semibold hover:bg-[#e0621a] disabled:opacity-50 transition-colors">
+              {placing ? 'Placing Order...' : `Place Order - ${formatPrice(grandTotal)}`}
             </button>
-            <p className="text-xs text-center text-gray-400 mt-3">
-              By placing this order, you agree to pay {formatPrice(grandTotal)} on delivery.
+            <p className="text-[11px] text-center text-gray-400 mt-3">
+              No account needed. We&apos;ll auto-create one for you.
             </p>
           </div>
         </div>

@@ -37,8 +37,8 @@ export async function updateSession(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith('/products/')
   );
 
-  // Protected routes that require login (cart is public for guests)
-  const protectedRoutes = ['/checkout', '/orders', '/wishlist', '/profile', '/admin', '/vendor'];
+  // Protected routes that require login (cart + checkout are public for guests)
+  const protectedRoutes = ['/orders', '/profile', '/admin', '/vendor'];
   const isProtectedRoute = protectedRoutes.some(
     (route) => pathname === route || pathname.startsWith(route + '/')
   );

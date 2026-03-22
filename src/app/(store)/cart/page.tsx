@@ -1,7 +1,6 @@
 'use client';
 
 import { useCart } from '@/hooks/use-cart';
-import { useAuth } from '@/components/auth-provider';
 import { formatPrice } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -9,7 +8,6 @@ import Link from 'next/link';
 import { ShoppingCart, Minus, Plus, Trash2, Store } from 'lucide-react';
 
 export default function CartPage() {
-  const { user } = useAuth();
   const { items, loading, updateQuantity, removeItem, totalPrice, itemsByVendor } = useCart();
 
   if (loading) {
@@ -107,17 +105,14 @@ export default function CartPage() {
                 <span className="text-[#F57224]">{formatPrice(totalPrice)}</span>
               </div>
             </div>
-            {user ? (
-              <Link href="/checkout"
-                className="block w-full text-center py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a]">
-                Proceed to Checkout
-              </Link>
-            ) : (
-              <Link href="/login?redirect=/checkout"
-                className="block w-full text-center py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a]">
-                Login to Checkout
-              </Link>
-            )}
+            <Link href="/checkout"
+              className="block w-full text-center py-3 bg-[#F57224] text-white rounded-xl font-semibold hover:bg-[#e0621a]">
+              Proceed to Checkout
+            </Link>
+            <Link href="/products"
+              className="block w-full text-center py-2.5 mt-2 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800">
+              Continue Shopping
+            </Link>
           </div>
         </div>
       </div>
