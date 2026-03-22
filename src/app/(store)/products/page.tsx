@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { formatPrice } from '@/lib/utils';
-import { StarRating } from '@/components/ui/star-rating';
+import { ProductCard } from '@/components/ui/product-card';
 import { ProductCardSkeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Pagination } from '@/components/ui/pagination';
@@ -106,12 +106,12 @@ function ProductsContent() {
               <h3 className="font-medium text-sm mb-2">Category</h3>
               <div className="space-y-1">
                 <button onClick={() => updateParam('category', '')}
-                  className={`block w-full text-left px-3 py-1.5 rounded-lg text-sm ${!category ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+                  className={`block w-full text-left px-3 py-1.5 rounded-lg text-sm ${!category ? 'bg-orange-50 text-[#e0621a] dark:bg-orange-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
                   All Categories
                 </button>
                 {categories.map((c) => (
                   <button key={c.id} onClick={() => updateParam('category', c.slug)}
-                    className={`block w-full text-left px-3 py-1.5 rounded-lg text-sm ${category === c.slug ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+                    className={`block w-full text-left px-3 py-1.5 rounded-lg text-sm ${category === c.slug ? 'bg-orange-50 text-[#e0621a] dark:bg-orange-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
                     {c.name}
                   </button>
                 ))}
@@ -153,31 +153,23 @@ function ProductsContent() {
             <EmptyState icon={<ShoppingBag className="w-8 h-8 text-gray-400" />} title="No products found" description="Try adjusting your filters" />
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {products.map((product) => {
                   const img = product.images?.find((i) => i.is_primary) || product.images?.[0];
                   return (
-                    <Link key={product.id} href={`/products/${product.slug}`}
-                      className="group bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow">
-                      <div className="aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden">
-                        {img ? (
-                          <img src={img.url} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center"><ShoppingBag className="w-12 h-12 text-gray-300" /></div>
-                        )}
-                      </div>
-                      <div className="p-3 md:p-4">
-                        <p className="text-xs text-gray-500 mb-1">{(product.vendor as unknown as { business_name: string })?.business_name}</p>
-                        <h3 className="font-medium text-sm line-clamp-2 mb-2">{product.name}</h3>
-                        <StarRating rating={product.rating} showCount count={product.rating_count} />
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="text-lg font-bold text-indigo-600">{formatPrice(product.price)}</span>
-                          {product.compare_at_price && product.compare_at_price > product.price && (
-                            <span className="text-sm text-gray-400 line-through">{formatPrice(product.compare_at_price)}</span>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
+                    <ProductCard
+                      key={product.id}
+                      id={product.id}
+                      slug={product.slug}
+                      name={product.name}
+                      price={product.price}
+                      compareAtPrice={product.compare_at_price}
+                      imageUrl={img?.url}
+                      vendorName={(product.vendor as unknown as { business_name: string })?.business_name}
+                      rating={product.rating}
+                      ratingCount={product.rating_count}
+                      totalSold={product.total_sold}
+                    />
                   );
                 })}
               </div>

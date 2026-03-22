@@ -54,7 +54,7 @@ function LoginForm() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Store className="w-8 h-8 text-indigo-600" />
+            <Store className="w-8 h-8 text-[#F57224]" />
             <span className="text-2xl font-bold">{SITE_NAME}</span>
           </Link>
           <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -100,7 +100,7 @@ function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F57224] text-sm"
                   placeholder="you@example.com"
                 />
               </div>
@@ -115,7 +115,7 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F57224] text-sm"
                   placeholder="Your password"
                 />
                 <button
@@ -131,7 +131,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+              className="w-full py-2.5 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a] disabled:opacity-50 transition-colors"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -140,7 +140,7 @@ function LoginForm() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-indigo-600 font-medium hover:underline">Sign up</Link>
+          <Link href="/signup" className="text-[#F57224] font-medium hover:underline">Sign up</Link>
         </p>
       </div>
     </div>

@@ -44,7 +44,7 @@ export default function WishlistPage() {
           icon={<Heart className="w-8 h-8 text-gray-400" />}
           title="Your wishlist is empty"
           description="Save products you love for later"
-          action={<Link href="/products" className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm">Browse Products</Link>}
+          action={<Link href="/products" className="px-6 py-2 bg-[#F57224] text-white rounded-lg text-sm">Browse Products</Link>}
         />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -69,7 +69,7 @@ export default function WishlistPage() {
                   <div className="p-3">
                     <p className="text-xs text-gray-500">{(product.vendor as unknown as { business_name: string })?.business_name}</p>
                     <h3 className="font-medium text-sm line-clamp-2 mb-2">{product.name}</h3>
-                    <span className="text-lg font-bold text-indigo-600">{formatPrice(product.price)}</span>
+                    <span className="text-lg font-bold text-[#F57224]">{formatPrice(product.price)}</span>
                   </div>
                 </Link>
               </div>

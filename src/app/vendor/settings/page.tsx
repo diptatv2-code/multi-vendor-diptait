@@ -38,7 +38,7 @@ export default function VendorSettingsPage() {
           <div>
             <label className="block text-sm font-medium mb-1">Full Name</label>
             <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
@@ -48,10 +48,10 @@ export default function VendorSettingsPage() {
           <div>
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
           <button type="submit" disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+            className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
             <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </div>

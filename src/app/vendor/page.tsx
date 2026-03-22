@@ -55,7 +55,7 @@ export default function VendorDashboard() {
     return (
       <div className="text-center py-16">
         <p className="text-lg text-gray-500 mb-4">No vendor profile found</p>
-        <Link href="/vendor/register" className="px-6 py-2 bg-indigo-600 text-white rounded-lg">Register as Vendor</Link>
+        <Link href="/vendor/register" className="px-6 py-2 bg-[#F57224] text-white rounded-lg">Register as Vendor</Link>
       </div>
     );
   }
@@ -101,7 +101,7 @@ export default function VendorDashboard() {
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
           <h2 className="font-semibold">Recent Orders</h2>
-          <Link href="/vendor/orders" className="text-sm text-indigo-600 hover:underline">View all</Link>
+          <Link href="/vendor/orders" className="text-sm text-[#F57224] hover:underline">View all</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

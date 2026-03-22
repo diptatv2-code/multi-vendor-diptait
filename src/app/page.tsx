@@ -1,164 +1,230 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { formatPrice } from '@/lib/utils';
-import { StarRating } from '@/components/ui/star-rating';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { ArrowRight, Store, ShoppingBag, Truck, Shield } from 'lucide-react';
+import { ProductCard } from '@/components/ui/product-card';
+import { StarRating } from '@/components/ui/star-rating';
+import {
+  ArrowRight, Store, Smartphone, Shirt, UtensilsCrossed, Sparkles, Apple,
+  Truck, Shield, Banknote, Clock, Zap,
+} from 'lucide-react';
 import { SITE_NAME } from '@/lib/constants';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: SITE_NAME,
-  description: 'Your one-stop multi-vendor marketplace in Bangladesh',
+  description: 'Bangladesh\'s trusted multi-vendor marketplace',
+};
+
+const categoryIcons: Record<string, typeof Smartphone> = {
+  electronics: Smartphone,
+  fashion: Shirt,
+  'home-kitchen': UtensilsCrossed,
+  'beauty-health': Sparkles,
+  groceries: Apple,
+};
+
+const categoryColors: Record<string, string> = {
+  electronics: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30',
+  fashion: 'bg-pink-50 text-pink-600 dark:bg-pink-900/30',
+  'home-kitchen': 'bg-amber-50 text-amber-600 dark:bg-amber-900/30',
+  'beauty-health': 'bg-rose-50 text-rose-600 dark:bg-rose-900/30',
+  groceries: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-900/30',
 };
 
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [{ data: featured }, { data: categories }, { data: topVendors }] = await Promise.all([
-    supabase
-      .from('products')
-      .select('*, images:product_images(*), vendor:vendor_profiles(business_name, slug)')
-      .eq('status', 'approved')
-      .eq('is_active', true)
-      .order('total_sold', { ascending: false })
-      .limit(8),
-    supabase.from('categories').select('*').is('parent_id', null).eq('is_active', true).order('sort_order').limit(8),
+  const [{ data: products }, { data: categories }, { data: topVendors }, { data: flashDeals }] = await Promise.all([
+    supabase.from('products').select('*, images:product_images(*), vendor:vendor_profiles(business_name)')
+      .eq('status', 'approved').eq('is_active', true).order('total_sold', { ascending: false }).limit(8),
+    supabase.from('categories').select('*').is('parent_id', null).eq('is_active', true).order('sort_order').limit(5),
     supabase.from('vendor_profiles').select('*').eq('status', 'approved').order('rating', { ascending: false }).limit(6),
+    supabase.from('products').select('*, images:product_images(*), vendor:vendor_profiles(business_name)')
+      .eq('status', 'approved').eq('is_active', true).not('compare_at_price', 'is', null)
+      .order('created_at', { ascending: false }).limit(6),
   ]);
-
-  const products = featured || [];
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 text-white">
-          <div className="max-w-7xl mx-auto px-4 py-20 md:py-28 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Shop from Multiple Vendors<br />in One Place</h1>
-            <p className="text-lg md:text-xl text-indigo-100 max-w-2xl mx-auto mb-8">
-              Discover thousands of products from trusted vendors across Bangladesh. Best prices, fast delivery, and Cash on Delivery.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/products" className="px-8 py-3 bg-white text-indigo-700 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
-                Browse Products
-              </Link>
-              <Link href="/vendor/register" className="px-8 py-3 bg-indigo-500 text-white rounded-xl font-semibold hover:bg-indigo-400 transition-colors border border-indigo-400">
-                Become a Vendor
+      <main className="flex-1 bg-[#f5f5f5] dark:bg-[#121212]">
+
+        {/* Hero Banners */}
+        <section className="max-w-7xl mx-auto px-4 pt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Main banner */}
+            <div className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#F57224] to-[#ff9a5c] p-8 md:p-12 text-white min-h-[280px] flex flex-col justify-center">
+              <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-medium">
+                <Zap className="w-3 h-3 inline mr-1" /> MEGA SALE
+              </div>
+              <p className="text-sm font-medium uppercase tracking-wider opacity-80 mb-2">New Collection 2026</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
+                Up to 50% OFF<br />on Top Products
+              </h2>
+              <p className="text-white/80 mb-6 max-w-md">Shop the best deals from verified vendors across Bangladesh. Cash on Delivery available.</p>
+              <Link href="/products" className="inline-flex items-center gap-2 bg-white text-[#F57224] font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors w-fit">
+                Shop Now <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-          </div>
-        </section>
 
-        {/* Features */}
-        <section className="max-w-7xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { icon: ShoppingBag, title: 'Wide Selection', desc: 'Products from multiple vendors' },
-              { icon: Truck, title: 'Fast Delivery', desc: 'Dhaka: ৳70 | Outside: ৳130' },
-              { icon: Shield, title: 'Cash on Delivery', desc: 'Pay when you receive' },
-              { icon: Store, title: 'Trusted Vendors', desc: 'Verified seller network' },
-            ].map((f) => (
-              <div key={f.title} className="text-center p-4">
-                <div className="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mx-auto mb-3">
-                  <f.icon className="w-6 h-6 text-indigo-600" />
-                </div>
-                <h3 className="font-semibold text-sm">{f.title}</h3>
-                <p className="text-xs text-gray-500 mt-1">{f.desc}</p>
+            {/* Side banners */}
+            <div className="flex flex-col gap-4">
+              <div className="flex-1 rounded-2xl overflow-hidden bg-gradient-to-br from-[#6C3CE1] to-[#9b6cf7] p-6 text-white flex flex-col justify-center">
+                <Truck className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-lg font-bold mb-1">Free Delivery</h3>
+                <p className="text-sm text-white/70">On orders above ৳2,000</p>
               </div>
-            ))}
+              <div className="flex-1 rounded-2xl overflow-hidden bg-gradient-to-br from-[#00b894] to-[#55efc4] p-6 text-white flex flex-col justify-center">
+                <Banknote className="w-8 h-8 mb-3 opacity-80" />
+                <h3 className="text-lg font-bold mb-1">Cash on Delivery</h3>
+                <p className="text-sm text-white/70">Pay when you receive</p>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Categories */}
         {(categories?.length || 0) > 0 && (
-          <section className="max-w-7xl mx-auto px-4 py-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Shop by Category</h2>
-              <Link href="/products" className="text-indigo-600 text-sm font-medium flex items-center gap-1 hover:underline">
-                View all <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {categories?.map((cat) => (
-                <Link key={cat.id} href={`/products?category=${cat.slug}`}
-                  className="flex flex-col items-center p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors hover:shadow-md">
-                  <div className="w-14 h-14 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center mb-3">
-                    <ShoppingBag className="w-7 h-7 text-indigo-500" />
-                  </div>
-                  <span className="text-sm font-medium text-center">{cat.name}</span>
-                </Link>
-              ))}
+          <section className="max-w-7xl mx-auto px-4 py-8">
+            <div className="flex items-center overflow-x-auto no-scrollbar gap-3 pb-2">
+              {categories?.map((cat) => {
+                const Icon = categoryIcons[cat.slug] || Smartphone;
+                const color = categoryColors[cat.slug] || 'bg-gray-50 text-gray-600';
+                return (
+                  <Link key={cat.id} href={`/products?category=${cat.slug}`}
+                    className="flex items-center gap-3 px-5 py-3.5 bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-100 dark:border-gray-800 hover:border-[#F57224] hover:shadow-md transition-all shrink-0">
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color}`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="font-medium text-sm">{cat.name}</span>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         )}
 
-        {/* Products */}
-        <section className="max-w-7xl mx-auto px-4 py-12">
+        {/* Flash Deals */}
+        {(flashDeals?.length || 0) > 0 && (
+          <section className="max-w-7xl mx-auto px-4 py-6">
+            <div className="bg-white dark:bg-[#1e1e1e] rounded-2xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+              <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[#F57224] to-[#ff9a5c]">
+                <div className="flex items-center gap-3 text-white">
+                  <Zap className="w-6 h-6" />
+                  <h2 className="text-lg font-bold">Flash Deals</h2>
+                </div>
+                <div className="flex items-center gap-2 text-white">
+                  <Clock className="w-4 h-4" />
+                  <div className="flex items-center gap-1 text-sm font-mono font-bold">
+                    <span className="bg-white/20 rounded px-1.5 py-0.5">23</span>:
+                    <span className="bg-white/20 rounded px-1.5 py-0.5">59</span>:
+                    <span className="bg-white/20 rounded px-1.5 py-0.5">59</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex overflow-x-auto no-scrollbar gap-4 p-4">
+                {flashDeals?.map((p: Record<string, unknown>) => {
+                  const imgs = p.images as { url: string; is_primary: boolean }[] | undefined;
+                  const img = imgs?.find((i) => i.is_primary) || imgs?.[0];
+                  const vendor = p.vendor as { business_name: string } | undefined;
+                  return (
+                    <div key={p.id as string} className="shrink-0 w-44">
+                      <ProductCard
+                        id={p.id as string}
+                        slug={p.slug as string}
+                        name={p.name as string}
+                        price={p.price as number}
+                        compareAtPrice={p.compare_at_price as number}
+                        imageUrl={img?.url}
+                        vendorName={vendor?.business_name}
+                        rating={p.rating as number}
+                        ratingCount={p.rating_count as number}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Popular Products */}
+        <section className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Popular Products</h2>
-            <Link href="/products" className="text-indigo-600 text-sm font-medium flex items-center gap-1 hover:underline">
-              View all <ArrowRight className="w-4 h-4" />
+            <h2 className="text-xl md:text-2xl font-bold">Popular Products</h2>
+            <Link href="/products" className="flex items-center gap-1 text-[#F57224] text-sm font-medium hover:underline">
+              View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          {products.length === 0 ? (
-            <div className="text-center py-16 text-gray-500">No products yet. Check back soon!</div>
+          {(products?.length || 0) === 0 ? (
+            <div className="text-center py-16 text-gray-500">No products yet.</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {products.map((product: Record<string, unknown>) => {
-                const imgs = product.images as { url: string; is_primary: boolean }[] | undefined;
-                const primaryImg = imgs?.find((i) => i.is_primary) || imgs?.[0];
-                const vendor = product.vendor as { business_name: string } | undefined;
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {products?.map((p: Record<string, unknown>) => {
+                const imgs = p.images as { url: string; is_primary: boolean }[] | undefined;
+                const img = imgs?.find((i) => i.is_primary) || imgs?.[0];
+                const vendor = p.vendor as { business_name: string } | undefined;
                 return (
-                  <Link key={product.id as string} href={`/products/${product.slug}`}
-                    className="group bg-white dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow">
-                    <div className="aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden">
-                      {primaryImg ? (
-                        <img src={primaryImg.url} alt={product.name as string} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <ShoppingBag className="w-12 h-12 text-gray-300" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <p className="text-xs text-gray-500 mb-1">{vendor?.business_name}</p>
-                      <h3 className="font-medium text-sm line-clamp-2 mb-2">{product.name as string}</h3>
-                      <div className="flex items-center gap-2 mb-2">
-                        <StarRating rating={product.rating as number} showCount count={product.rating_count as number} />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg font-bold text-indigo-600">{formatPrice(product.price as number)}</span>
-                        {(product.compare_at_price as number) > (product.price as number) ? (
-                          <span className="text-sm text-gray-400 line-through">{formatPrice(product.compare_at_price as number)}</span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </Link>
+                  <ProductCard
+                    key={p.id as string}
+                    id={p.id as string}
+                    slug={p.slug as string}
+                    name={p.name as string}
+                    price={p.price as number}
+                    compareAtPrice={p.compare_at_price as number}
+                    imageUrl={img?.url}
+                    vendorName={vendor?.business_name}
+                    rating={p.rating as number}
+                    ratingCount={p.rating_count as number}
+                    totalSold={p.total_sold as number}
+                  />
                 );
               })}
             </div>
           )}
         </section>
 
+        {/* Trust bar */}
+        <section className="max-w-7xl mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: Truck, title: 'Nationwide Delivery', desc: 'Dhaka ৳70 | Outside ৳130', color: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30' },
+              { icon: Banknote, title: 'Cash on Delivery', desc: 'Pay when you receive', color: 'bg-green-50 text-green-600 dark:bg-green-900/30' },
+              { icon: Shield, title: 'Secure Shopping', desc: 'Verified vendors only', color: 'bg-purple-50 text-purple-600 dark:bg-purple-900/30' },
+              { icon: Clock, title: '24/7 Support', desc: 'Always here to help', color: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30' },
+            ].map((f) => (
+              <div key={f.title} className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-100 dark:border-gray-800 p-5 flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${f.color}`}>
+                  <f.icon className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm">{f.title}</h3>
+                  <p className="text-xs text-gray-500">{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Top Vendors */}
         {(topVendors?.length || 0) > 0 && (
-          <section className="max-w-7xl mx-auto px-4 py-12">
-            <h2 className="text-2xl font-bold mb-6">Top Vendors</h2>
+          <section className="max-w-7xl mx-auto px-4 py-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl md:text-2xl font-bold">Top Vendors</h2>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {topVendors?.map((v) => (
-                <div key={v.id} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 text-center hover:shadow-md transition-shadow">
+                <div key={v.id} className="bg-white dark:bg-[#1e1e1e] rounded-xl border border-gray-100 dark:border-gray-800 p-5 text-center hover:shadow-lg hover:border-[#F57224] transition-all cursor-pointer">
                   {v.logo_url ? (
-                    <img src={v.logo_url} alt={v.business_name} className="w-16 h-16 rounded-full mx-auto mb-3 object-cover" />
+                    <img src={v.logo_url} alt={v.business_name} className="w-16 h-16 rounded-full mx-auto mb-3 object-cover border-2 border-gray-100" />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mx-auto mb-3">
-                      <Store className="w-7 h-7 text-indigo-600" />
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#F57224] to-[#ff9a5c] flex items-center justify-center mx-auto mb-3">
+                      <Store className="w-7 h-7 text-white" />
                     </div>
                   )}
-                  <p className="font-medium text-sm">{v.business_name}</p>
-                  <div className="flex justify-center mt-1">
+                  <p className="font-semibold text-sm mb-1">{v.business_name}</p>
+                  <div className="flex justify-center">
                     <StarRating rating={v.rating} showCount count={v.rating_count} />
                   </div>
                 </div>

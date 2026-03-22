@@ -83,7 +83,7 @@ export default function OrdersPage() {
 
               <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
                 <span className="font-bold">{formatPrice(order.total)}</span>
-                <button onClick={() => viewOrder(order)} className="text-sm text-indigo-600 font-medium hover:underline">
+                <button onClick={() => viewOrder(order)} className="text-sm text-[#F57224] font-medium hover:underline">
                   View Details
                 </button>
               </div>

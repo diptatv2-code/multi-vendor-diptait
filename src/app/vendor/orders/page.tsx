@@ -64,7 +64,7 @@ export default function VendorOrdersPage() {
       <div className="flex gap-2 mb-6 flex-wrap">
         {filters.map((f) => (
           <button key={f} onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${filter === f ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+            className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
             {f}
           </button>
         ))}
@@ -97,7 +97,7 @@ export default function VendorOrdersPage() {
                   <td className="px-6 py-3 text-gray-500">{formatDate(o.created_at)}</td>
                   <td className="px-6 py-3">
                     <button onClick={() => { setSelectedOrder(o); setNewStatus(o.status); }}
-                      className="text-indigo-600 text-sm hover:underline">Update</button>
+                      className="text-[#F57224] text-sm hover:underline">Update</button>
                   </td>
                 </tr>
               ))}
@@ -135,7 +135,7 @@ export default function VendorOrdersPage() {
             </div>
             <div className="flex gap-3 justify-end">
               <button onClick={() => setSelectedOrder(null)} className="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm">Cancel</button>
-              <button onClick={updateOrderStatus} className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Update Status</button>
+              <button onClick={updateOrderStatus} className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium">Update Status</button>
             </div>
           </div>
         )}

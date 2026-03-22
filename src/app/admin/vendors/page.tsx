@@ -47,7 +47,7 @@ export default function AdminVendorsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              filter === f ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              filter === f ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
             }`}
           >
             {f}
@@ -78,8 +78,8 @@ export default function AdminVendorsPage() {
                       {v.logo_url ? (
                         <img src={v.logo_url} alt="" className="w-10 h-10 rounded-lg object-cover" />
                       ) : (
-                        <div className="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                          <Store className="w-5 h-5 text-indigo-600" />
+                        <div className="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                          <Store className="w-5 h-5 text-[#F57224]" />
                         </div>
                       )}
                       <div>

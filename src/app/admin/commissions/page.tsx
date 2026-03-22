@@ -78,7 +78,7 @@ export default function AdminCommissionsPage() {
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">%</span>
             </div>
-            <button onClick={saveDefaultRate} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+            <button onClick={saveDefaultRate} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
               <Save className="w-4 h-4" /> Save
             </button>
           </div>
@@ -111,7 +111,7 @@ export default function AdminCommissionsPage() {
                       />
                       <span className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 text-xs">%</span>
                     </div>
-                    <button onClick={() => saveVendorRate(v.id)} className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 hover:bg-indigo-200">
+                    <button onClick={() => saveVendorRate(v.id)} className="p-1.5 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-[#F57224] hover:bg-indigo-200">
                       <Save className="w-4 h-4" />
                     </button>
                   </div>

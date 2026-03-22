@@ -42,7 +42,7 @@ export function DashboardHeader({ onMenuToggle }: { onMenuToggle?: () => void })
         </div>
 
         <div className="flex items-center gap-2 pl-2 ml-2 border-l border-gray-200 dark:border-gray-700">
-          <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-medium">
+          <div className="w-8 h-8 rounded-full bg-[#F57224] text-white flex items-center justify-center text-sm font-medium">
             {profile?.full_name?.[0]?.toUpperCase() || 'U'}
           </div>
           <div className="hidden sm:block">

@@ -46,7 +46,7 @@ export default function VendorProductsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">My Products</h1>
-        <Link href="/vendor/products/new" className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+        <Link href="/vendor/products/new" className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a]">
           <Plus className="w-4 h-4" /> Add Product
         </Link>
       </div>
@@ -58,7 +58,7 @@ export default function VendorProductsPage() {
             title="No products yet"
             description="Add your first product to start selling"
             action={
-              <Link href="/vendor/products/new" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm">
+              <Link href="/vendor/products/new" className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm">
                 Add Product
               </Link>
             }

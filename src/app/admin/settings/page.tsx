@@ -46,7 +46,7 @@ export default function AdminSettingsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">Site Settings</h1>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
           <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Settings'}
         </button>
       </div>
@@ -60,14 +60,14 @@ export default function AdminSettingsPage() {
                 value={settings[field.key] || ''}
                 onChange={(e) => updateSetting(field.key, e.target.value)}
                 rows={3}
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]"
               />
             ) : (
               <input
                 type={field.type}
                 value={settings[field.key] || ''}
                 onChange={(e) => updateSetting(field.key, e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 max-w-md"
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224] max-w-md"
               />
             )}
           </div>

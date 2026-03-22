@@ -42,7 +42,7 @@ export default function AdminUsersPage() {
             key={r}
             onClick={() => setRoleFilter(r)}
             className={`px-4 py-2 rounded-lg text-sm font-medium capitalize ${
-              roleFilter === r ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
+              roleFilter === r ? 'bg-[#F57224] text-white' : 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800'
             }`}
           >
             {r.replace('_', ' ')}
@@ -69,7 +69,7 @@ export default function AdminUsersPage() {
                 <tr key={u.id} className="border-b border-gray-100 dark:border-gray-800">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-xs font-medium text-indigo-600">
+                      <div className="w-9 h-9 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xs font-medium text-[#F57224]">
                         {getInitials(u.full_name || u.email)}
                       </div>
                       <div>

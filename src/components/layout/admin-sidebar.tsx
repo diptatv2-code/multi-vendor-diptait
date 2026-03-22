@@ -31,7 +31,7 @@ export function AdminSidebar() {
       } bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 min-h-screen transition-all duration-200 hidden lg:block`}
     >
       <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
-        {!collapsed && <span className="font-bold text-indigo-600">Admin Panel</span>}
+        {!collapsed && <span className="font-bold text-[#F57224]">Admin Panel</span>}
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -49,7 +49,7 @@ export function AdminSidebar() {
               title={collapsed ? label : undefined}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active
-                  ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                  ? 'bg-orange-50 text-[#e0621a] dark:bg-orange-900/30 dark:text-[#ff9a5c]'
                   : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >

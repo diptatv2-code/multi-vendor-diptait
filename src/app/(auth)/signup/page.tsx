@@ -63,7 +63,7 @@ export default function SignupPage() {
             <p className="text-gray-500 mb-4">
               We&apos;ve sent a confirmation link to <strong>{email}</strong>. Click the link to activate your account.
             </p>
-            <Link href="/login" className="text-indigo-600 font-medium hover:underline">
+            <Link href="/login" className="text-[#F57224] font-medium hover:underline">
               Back to Login
             </Link>
           </div>
@@ -77,7 +77,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <Store className="w-8 h-8 text-indigo-600" />
+            <Store className="w-8 h-8 text-[#F57224]" />
             <span className="text-2xl font-bold">{SITE_NAME}</span>
           </Link>
           <h1 className="text-2xl font-bold">Create an account</h1>
@@ -123,7 +123,7 @@ export default function SignupPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F57224] text-sm"
                   placeholder="John Doe"
                 />
               </div>
@@ -138,7 +138,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F57224] text-sm"
                   placeholder="you@example.com"
                 />
               </div>
@@ -154,7 +154,7 @@ export default function SignupPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F57224] text-sm"
                   placeholder="Min. 6 characters"
                 />
                 <button
@@ -170,7 +170,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+              className="w-full py-2.5 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a] disabled:opacity-50 transition-colors"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
@@ -179,11 +179,11 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Already have an account?{' '}
-          <Link href="/login" className="text-indigo-600 font-medium hover:underline">Sign in</Link>
+          <Link href="/login" className="text-[#F57224] font-medium hover:underline">Sign in</Link>
         </p>
         <p className="text-center text-sm text-gray-500 mt-2">
           Want to sell?{' '}
-          <Link href="/vendor/register" className="text-indigo-600 font-medium hover:underline">Register as Vendor</Link>
+          <Link href="/vendor/register" className="text-[#F57224] font-medium hover:underline">Register as Vendor</Link>
         </p>
       </div>
     </div>

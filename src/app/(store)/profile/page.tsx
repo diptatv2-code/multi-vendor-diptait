@@ -77,7 +77,7 @@ export default function ProfilePage() {
           <div>
             <label className="block text-sm font-medium mb-1">Full Name</label>
             <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
@@ -87,10 +87,10 @@ export default function ProfilePage() {
           <div>
             <label className="block text-sm font-medium mb-1">Phone</label>
             <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
           <button type="submit" disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+            className="flex items-center gap-2 px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
             <Save className="w-4 h-4" /> {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </form>
@@ -98,7 +98,7 @@ export default function ProfilePage() {
         <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold">Saved Addresses</h2>
-            <button onClick={() => setShowAddAddress(true)} className="flex items-center gap-1 text-sm text-indigo-600 font-medium">
+            <button onClick={() => setShowAddAddress(true)} className="flex items-center gap-1 text-sm text-[#F57224] font-medium">
               <Plus className="w-4 h-4" /> Add
             </button>
           </div>
@@ -113,7 +113,7 @@ export default function ProfilePage() {
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium">{addr.label}</span>
-                    {addr.is_default && <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">Default</span>}
+                    {addr.is_default && <span className="text-xs bg-orange-100 text-[#e0621a] px-2 py-0.5 rounded">Default</span>}
                   </div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{addr.full_name}</p>
                   <p className="text-sm text-gray-500">{addr.address_line1}, {addr.city}, {addr.state} {addr.postal_code}</p>
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                   className="px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
               </div>
               <div className="flex gap-2">
-                <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Save Address</button>
+                <button type="submit" className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium">Save Address</button>
                 <button type="button" onClick={() => setShowAddAddress(false)} className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm">Cancel</button>
               </div>
             </form>

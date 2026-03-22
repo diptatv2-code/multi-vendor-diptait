@@ -92,7 +92,7 @@ export default function AdminAnalyticsPage() {
                 <div className="flex items-center gap-3">
                   <div className="w-32 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-indigo-500 rounded-full"
+                      className="h-full bg-orange-500 rounded-full"
                       style={{ width: `${(count / (stats.totalOrders || 1)) * 100}%` }}
                     />
                   </div>

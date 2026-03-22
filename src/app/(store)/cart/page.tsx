@@ -29,7 +29,7 @@ export default function CartPage() {
           icon={<ShoppingCart className="w-8 h-8 text-gray-400" />}
           title="Your cart is empty"
           description="Browse products and add them to your cart"
-          action={<Link href="/products" className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm">Browse Products</Link>}
+          action={<Link href="/products" className="px-6 py-2 bg-[#F57224] text-white rounded-lg text-sm">Browse Products</Link>}
         />
       </div>
     );
@@ -59,11 +59,11 @@ export default function CartPage() {
                           {img ? <img src={img.url} alt="" className="w-full h-full object-cover" /> : null}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <Link href={`/products/${item.product?.slug}`} className="font-medium text-sm hover:text-indigo-600 line-clamp-2">
+                          <Link href={`/products/${item.product?.slug}`} className="font-medium text-sm hover:text-[#F57224] line-clamp-2">
                             {item.product?.name}
                           </Link>
                           {item.variant && <p className="text-xs text-gray-500 mt-0.5">{item.variant.name}</p>}
-                          <p className="font-bold text-indigo-600 mt-1">{formatPrice(price)}</p>
+                          <p className="font-bold text-[#F57224] mt-1">{formatPrice(price)}</p>
                         </div>
                         <div className="flex flex-col items-end gap-2">
                           <div className="flex items-center border border-gray-200 dark:border-gray-700 rounded-lg">
@@ -102,11 +102,11 @@ export default function CartPage() {
               </div>
               <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-base">
                 <span>Total</span>
-                <span className="text-indigo-600">{formatPrice(totalPrice)}</span>
+                <span className="text-[#F57224]">{formatPrice(totalPrice)}</span>
               </div>
             </div>
             <Link href="/checkout"
-              className="block w-full text-center py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700">
+              className="block w-full text-center py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a]">
               Proceed to Checkout
             </Link>
           </div>

@@ -154,7 +154,7 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
         <p className="text-gray-500 mb-4">Your cart is empty</p>
-        <button onClick={() => router.push('/products')} className="px-6 py-2 bg-indigo-600 text-white rounded-lg">Browse Products</button>
+        <button onClick={() => router.push('/products')} className="px-6 py-2 bg-[#F57224] text-white rounded-lg">Browse Products</button>
       </div>
     );
   }
@@ -172,7 +172,7 @@ export default function CheckoutPage() {
             {addresses.length > 0 && !showNewAddress && (
               <div className="space-y-3 mb-4">
                 {addresses.map((addr) => (
-                  <label key={addr.id} className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer ${selectedAddress === addr.id ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                  <label key={addr.id} className={`flex items-start gap-3 p-4 rounded-lg border cursor-pointer ${selectedAddress === addr.id ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
                     <input type="radio" name="address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="mt-1" />
                     <div>
                       <p className="font-medium text-sm">{addr.full_name}</p>
@@ -182,7 +182,7 @@ export default function CheckoutPage() {
                     </div>
                   </label>
                 ))}
-                <button onClick={() => setShowNewAddress(true)} className="text-sm text-indigo-600 font-medium hover:underline">
+                <button onClick={() => setShowNewAddress(true)} className="text-sm text-[#F57224] font-medium hover:underline">
                   + Add new address
                 </button>
               </div>
@@ -218,17 +218,17 @@ export default function CheckoutPage() {
           {/* Delivery Zone */}
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Truck className="w-5 h-5 text-indigo-600" />
+              <Truck className="w-5 h-5 text-[#F57224]" />
               <h2 className="font-semibold">Delivery Zone (ডেলিভারি জোন)</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {DELIVERY_ZONES.map((zone) => (
-                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer ${deliveryZone === zone.value ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer ${deliveryZone === zone.value ? 'border-[#F57224] bg-orange-50 dark:bg-orange-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
                   <div className="flex items-center gap-3">
                     <input type="radio" name="deliveryZone" checked={deliveryZone === zone.value} onChange={() => setDeliveryZone(zone.value)} />
                     <span className="text-sm font-medium">{zone.label}</span>
                   </div>
-                  <span className="text-sm font-bold text-indigo-600">{formatPrice(zone.fee)}</span>
+                  <span className="text-sm font-bold text-[#F57224]">{formatPrice(zone.fee)}</span>
                 </label>
               ))}
             </div>
@@ -288,11 +288,11 @@ export default function CheckoutPage() {
               )}
               <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-indigo-600">{formatPrice(grandTotal)}</span>
+                <span className="text-[#F57224]">{formatPrice(grandTotal)}</span>
               </div>
             </div>
             <button onClick={handlePlaceOrder} disabled={placing}
-              className="w-full py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50">
+              className="w-full py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a] disabled:opacity-50">
               {placing ? 'Placing Order...' : 'Place Order (COD)'}
             </button>
             <p className="text-xs text-center text-gray-400 mt-3">

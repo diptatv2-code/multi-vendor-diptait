@@ -105,25 +105,25 @@ export default function NewProductPage() {
           <div>
             <label className="block text-sm font-medium mb-1">Product Name *</label>
             <input type="text" value={form.name} onChange={(e) => updateForm('name', e.target.value)} required
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Short Description</label>
             <input type="text" value={form.short_description} onChange={(e) => updateForm('short_description', e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Full Description</label>
             <textarea value={form.description} onChange={(e) => updateForm('description', e.target.value)} rows={5}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Category</label>
             <select value={form.category_id} onChange={(e) => updateForm('category_id', e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]">
               <option value="">Select category</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
@@ -141,41 +141,41 @@ export default function NewProductPage() {
             <div>
               <label className="block text-sm font-medium mb-1">Price ($) *</label>
               <input type="number" value={form.price} onChange={(e) => updateForm('price', e.target.value)} required step="0.01" min="0"
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Compare at Price</label>
               <input type="number" value={form.compare_at_price} onChange={(e) => updateForm('compare_at_price', e.target.value)} step="0.01" min="0"
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Cost Price</label>
               <input type="number" value={form.cost_price} onChange={(e) => updateForm('cost_price', e.target.value)} step="0.01" min="0"
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">SKU</label>
               <input type="text" value={form.sku} onChange={(e) => updateForm('sku', e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Stock Quantity</label>
               <input type="number" value={form.stock_quantity} onChange={(e) => updateForm('stock_quantity', e.target.value)} min="0"
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Low Stock Alert</label>
               <input type="number" value={form.low_stock_threshold} onChange={(e) => updateForm('low_stock_threshold', e.target.value)} min="0"
-                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-[#F57224]" />
             </div>
           </div>
         </div>
 
         <div className="flex gap-3 justify-end">
           <button type="button" onClick={() => router.back()} className="px-6 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm">Cancel</button>
-          <button type="submit" disabled={loading} className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50">
+          <button type="submit" disabled={loading} className="px-6 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a] disabled:opacity-50">
             {loading ? 'Creating...' : 'Create Product'}
           </button>
         </div>

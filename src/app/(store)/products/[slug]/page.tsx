@@ -150,7 +150,7 @@ export default function ProductDetailPage() {
             <div className="flex gap-2 overflow-x-auto">
               {images.map((img, i) => (
                 <button key={img.id} onClick={() => setSelectedImage(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${i === selectedImage ? 'border-indigo-500' : 'border-transparent'}`}>
+                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 ${i === selectedImage ? 'border-[#F57224]' : 'border-transparent'}`}>
                   <img src={img.url} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
@@ -169,7 +169,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-3xl font-bold text-indigo-600">{formatPrice(product.price)}</span>
+            <span className="text-3xl font-bold text-[#F57224]">{formatPrice(product.price)}</span>
             {discount > 0 && (
               <>
                 <span className="text-lg text-gray-400 line-through">{formatPrice(product.compare_at_price!)}</span>
@@ -202,7 +202,7 @@ export default function ProductDetailPage() {
 
           <div className="flex gap-3 mb-8">
             <button onClick={handleAddToCart} disabled={adding || product.stock_quantity < 1}
-              className="flex-1 flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50">
+              className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#F57224] text-white rounded-xl font-medium hover:bg-[#e0621a] disabled:opacity-50">
               <ShoppingCart className="w-5 h-5" />
               {adding ? 'Adding...' : 'Add to Cart'}
             </button>
@@ -217,8 +217,8 @@ export default function ProductDetailPage() {
             {vendor?.logo_url ? (
               <img src={vendor.logo_url} alt="" className="w-10 h-10 rounded-full object-cover" />
             ) : (
-              <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                <Store className="w-5 h-5 text-indigo-600" />
+              <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">
+                <Store className="w-5 h-5 text-[#F57224]" />
               </div>
             )}
             <div>
@@ -245,7 +245,7 @@ export default function ProductDetailPage() {
           <h2 className="text-xl font-bold">Reviews ({reviews.length})</h2>
           {user && (
             <button onClick={() => setShowReviewForm(!showReviewForm)}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+              className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium hover:bg-[#e0621a]">
               Write a Review
             </button>
           )}
@@ -267,7 +267,7 @@ export default function ProductDetailPage() {
               <textarea value={reviewComment} onChange={(e) => setReviewComment(e.target.value)} rows={3}
                 className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
             </div>
-            <button type="submit" className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium">Submit Review</button>
+            <button type="submit" className="px-4 py-2 bg-[#F57224] text-white rounded-lg text-sm font-medium">Submit Review</button>
           </form>
         )}
 
@@ -279,7 +279,7 @@ export default function ProductDetailPage() {
               <div key={r.id} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-xs font-medium text-indigo-600">
+                    <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-xs font-medium text-[#F57224]">
                       {getInitials((r.user as unknown as { full_name: string })?.full_name || 'U')}
                     </div>
                     <div>

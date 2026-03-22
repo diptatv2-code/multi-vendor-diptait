@@ -77,7 +77,7 @@ export default function AdminDashboard() {
     { label: 'Total Orders', value: stats!.totalOrders, icon: ShoppingCart, color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/30' },
     { label: 'Total Products', value: stats!.totalProducts, icon: Package, color: 'text-purple-600 bg-purple-100 dark:bg-purple-900/30', sub: `${stats!.pendingProducts} pending` },
     { label: 'Total Vendors', value: stats!.totalVendors, icon: Store, color: 'text-orange-600 bg-orange-100 dark:bg-orange-900/30', sub: `${stats!.pendingVendors} pending` },
-    { label: 'Total Users', value: stats!.totalUsers, icon: Users, color: 'text-indigo-600 bg-indigo-100 dark:bg-indigo-900/30' },
+    { label: 'Total Users', value: stats!.totalUsers, icon: Users, color: 'text-[#F57224] bg-orange-100 dark:bg-orange-900/30' },
     { label: 'Avg Order Value', value: stats!.totalOrders > 0 ? formatPrice(stats!.totalRevenue / stats!.totalOrders) : '$0', icon: TrendingUp, color: 'text-pink-600 bg-pink-100 dark:bg-pink-900/30' },
   ];
 
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-800">
           <h2 className="font-semibold">Recent Orders</h2>
-          <Link href="/admin/orders" className="text-sm text-indigo-600 hover:underline">View all</Link>
+          <Link href="/admin/orders" className="text-sm text-[#F57224] hover:underline">View all</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
