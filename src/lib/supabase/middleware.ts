@@ -32,12 +32,18 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Public routes that don't need auth
-  const publicRoutes = ['/', '/products', '/login', '/signup', '/auth/callback', '/vendor/register'];
+  const publicRoutes = ['/', '/home', '/products', '/login', '/signup', '/auth/callback', '/vendor/register'];
   const isPublicRoute = publicRoutes.some(
     (route) => pathname === route || pathname.startsWith('/products/')
   );
 
-  if (!user && !isPublicRoute) {
+  // Protected routes that require login
+  const protectedRoutes = ['/cart', '/checkout', '/orders', '/wishlist', '/profile', '/admin', '/vendor'];
+  const isProtectedRoute = protectedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route + '/')
+  );
+
+  if (!user && isProtectedRoute && !isPublicRoute) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('redirect', pathname);

@@ -32,3 +32,11 @@ export const ITEMS_PER_PAGE = 12;
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+export const DELIVERY_INSIDE_DHAKA = 70;
+export const DELIVERY_OUTSIDE_DHAKA = 130;
+
+export const DELIVERY_ZONES = [
+  { value: 'inside_dhaka', label: 'Inside Dhaka (ঢাকার ভেতরে)', fee: DELIVERY_INSIDE_DHAKA },
+  { value: 'outside_dhaka', label: 'Outside Dhaka (ঢাকার বাইরে)', fee: DELIVERY_OUTSIDE_DHAKA },
+] as const;

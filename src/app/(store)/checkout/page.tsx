@@ -7,6 +7,8 @@ import { useAuth } from '@/components/auth-provider';
 import { useCart } from '@/hooks/use-cart';
 import { formatPrice, generateOrderNumber } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import { DELIVERY_ZONES } from '@/lib/constants';
+import { Truck, Banknote } from 'lucide-react';
 import type { Address } from '@/lib/types';
 
 export default function CheckoutPage() {
@@ -16,11 +18,15 @@ export default function CheckoutPage() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [placing, setPlacing] = useState(false);
+  const [deliveryZone, setDeliveryZone] = useState('inside_dhaka');
   const [newAddress, setNewAddress] = useState({
     full_name: '', phone: '', address_line1: '', address_line2: '',
-    city: '', state: '', postal_code: '', country: 'US',
+    city: 'Dhaka', state: '', postal_code: '', country: 'Bangladesh',
   });
   const [showNewAddress, setShowNewAddress] = useState(false);
+
+  const deliveryFee = DELIVERY_ZONES.find((z) => z.value === deliveryZone)?.fee || 70;
+  const grandTotal = totalPrice + deliveryFee;
 
   useEffect(() => {
     if (!user) return;
@@ -37,8 +43,15 @@ export default function CheckoutPage() {
 
   async function handlePlaceOrder() {
     if (!user) return;
-    if (!selectedAddress && !showNewAddress) {
-      toast({ title: 'Please select an address', type: 'error' });
+
+    // Validate address
+    if (showNewAddress) {
+      if (!newAddress.full_name || !newAddress.phone || !newAddress.address_line1 || !newAddress.city) {
+        toast({ title: 'Please fill in all required address fields', type: 'error' });
+        return;
+      }
+    } else if (!selectedAddress) {
+      toast({ title: 'Please select a delivery address', type: 'error' });
       return;
     }
 
@@ -48,14 +61,13 @@ export default function CheckoutPage() {
     let shippingAddress: Record<string, string> = {};
 
     if (showNewAddress) {
-      // Save new address
       const { data: addr } = await supabase.from('addresses').insert({
         user_id: user.id,
         label: 'Default',
         ...newAddress,
         is_default: addresses.length === 0,
       }).select().single();
-      if (addr) shippingAddress = newAddress;
+      if (addr) shippingAddress = { ...newAddress, delivery_zone: deliveryZone };
     } else {
       const addr = addresses.find((a) => a.id === selectedAddress);
       if (addr) {
@@ -63,32 +75,38 @@ export default function CheckoutPage() {
           full_name: addr.full_name, phone: addr.phone,
           address_line1: addr.address_line1, address_line2: addr.address_line2 || '',
           city: addr.city, state: addr.state, postal_code: addr.postal_code, country: addr.country,
+          delivery_zone: deliveryZone,
         };
       }
     }
 
-    // Create one order per vendor
+    // Split order per vendor
+    const vendorCount = Object.keys(itemsByVendor).length;
+    const perVendorDeliveryFee = Math.ceil(deliveryFee / vendorCount);
+
     for (const [vendorId, vendorItems] of Object.entries(itemsByVendor)) {
       const subtotal = vendorItems.reduce((s, item) => {
         const price = item.variant?.price || item.product?.price || 0;
         return s + price * item.quantity;
       }, 0);
 
-      // Get vendor commission rate
-      const { data: vendor } = await supabase.from('vendor_profiles').select('commission_rate').eq('id', vendorId).single();
+      const { data: vendor } = await supabase.from('vendor_profiles').select('commission_rate, total_sales, total_revenue').eq('id', vendorId).single();
       const commissionRate = vendor?.commission_rate || 10;
       const commissionAmount = subtotal * (commissionRate / 100);
 
       const orderNumber = generateOrderNumber();
+      const orderTotal = subtotal + perVendorDeliveryFee;
 
       const { data: order, error } = await supabase.from('orders').insert({
         user_id: user.id,
         vendor_id: vendorId,
         order_number: orderNumber,
         subtotal,
-        total: subtotal,
+        shipping_fee: perVendorDeliveryFee,
+        total: orderTotal,
         commission_amount: commissionAmount,
         shipping_address: shippingAddress,
+        notes: 'Payment: Cash on Delivery (COD)',
       }).select().single();
 
       if (error || !order) {
@@ -97,7 +115,6 @@ export default function CheckoutPage() {
         return;
       }
 
-      // Insert order items
       await supabase.from('order_items').insert(
         vendorItems.map((item) => ({
           order_id: order.id,
@@ -111,15 +128,10 @@ export default function CheckoutPage() {
         }))
       );
 
-      // Add status history
       await supabase.from('order_status_history').insert({
-        order_id: order.id,
-        status: 'pending',
-        note: 'Order placed',
-        created_by: user.id,
+        order_id: order.id, status: 'pending', note: 'Order placed - Cash on Delivery', created_by: user.id,
       });
 
-      // Update product stock
       for (const item of vendorItems) {
         await supabase.from('products').update({
           stock_quantity: Math.max(0, (item.product?.stock_quantity || 0) - item.quantity),
@@ -127,15 +139,14 @@ export default function CheckoutPage() {
         }).eq('id', item.product_id);
       }
 
-      // Update vendor stats
       await supabase.from('vendor_profiles').update({
-        total_sales: (vendor as Record<string, number>)?.total_sales || 0 + vendorItems.reduce((s, i) => s + i.quantity, 0),
-        total_revenue: (vendor as Record<string, number>)?.total_revenue || 0 + subtotal,
+        total_sales: (vendor?.total_sales || 0) + vendorItems.reduce((s, i) => s + i.quantity, 0),
+        total_revenue: (vendor?.total_revenue || 0) + subtotal,
       }).eq('id', vendorId);
     }
 
     await clearCart();
-    toast({ title: 'Order placed successfully!', type: 'success' });
+    toast({ title: 'Order placed successfully!', description: 'You will pay cash on delivery.', type: 'success' });
     router.push('/orders');
   }
 
@@ -156,7 +167,7 @@ export default function CheckoutPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Shipping Address */}
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-            <h2 className="font-semibold mb-4">Shipping Address</h2>
+            <h2 className="font-semibold mb-4">Delivery Address (ডেলিভারি ঠিকানা)</h2>
 
             {addresses.length > 0 && !showNewAddress && (
               <div className="space-y-3 mb-4">
@@ -180,23 +191,21 @@ export default function CheckoutPage() {
             {showNewAddress && (
               <div className="space-y-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <input type="text" placeholder="Full Name *" value={newAddress.full_name} onChange={(e) => setNewAddress({ ...newAddress, full_name: e.target.value })} required
+                  <input type="text" placeholder="Full Name / নাম *" value={newAddress.full_name} onChange={(e) => setNewAddress({ ...newAddress, full_name: e.target.value })} required
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="tel" placeholder="Phone *" value={newAddress.phone} onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })} required
+                  <input type="tel" placeholder="Phone / ফোন নম্বর *" value={newAddress.phone} onChange={(e) => setNewAddress({ ...newAddress, phone: e.target.value })} required
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
                 </div>
-                <input type="text" placeholder="Address Line 1 *" value={newAddress.address_line1} onChange={(e) => setNewAddress({ ...newAddress, address_line1: e.target.value })} required
+                <input type="text" placeholder="Full Address / সম্পূর্ণ ঠিকানা *" value={newAddress.address_line1} onChange={(e) => setNewAddress({ ...newAddress, address_line1: e.target.value })} required
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                <input type="text" placeholder="Address Line 2" value={newAddress.address_line2} onChange={(e) => setNewAddress({ ...newAddress, address_line2: e.target.value })}
+                <input type="text" placeholder="Area / এলাকা (e.g., Dhanmondi, Mirpur)" value={newAddress.address_line2} onChange={(e) => setNewAddress({ ...newAddress, address_line2: e.target.value })}
                   className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <input type="text" placeholder="City *" value={newAddress.city} onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })} required
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <input type="text" placeholder="City / শহর *" value={newAddress.city} onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })} required
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="text" placeholder="State *" value={newAddress.state} onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })} required
+                  <input type="text" placeholder="District / জেলা" value={newAddress.state} onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="text" placeholder="ZIP *" value={newAddress.postal_code} onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })} required
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
-                  <input type="text" placeholder="Country" value={newAddress.country} onChange={(e) => setNewAddress({ ...newAddress, country: e.target.value })}
+                  <input type="text" placeholder="Postal Code / ডাক কোড" value={newAddress.postal_code} onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })}
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm" />
                 </div>
                 {addresses.length > 0 && (
@@ -206,45 +215,89 @@ export default function CheckoutPage() {
             )}
           </div>
 
+          {/* Delivery Zone */}
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Truck className="w-5 h-5 text-indigo-600" />
+              <h2 className="font-semibold">Delivery Zone (ডেলিভারি জোন)</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {DELIVERY_ZONES.map((zone) => (
+                <label key={zone.value} className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer ${deliveryZone === zone.value ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-gray-200 dark:border-gray-700'}`}>
+                  <div className="flex items-center gap-3">
+                    <input type="radio" name="deliveryZone" checked={deliveryZone === zone.value} onChange={() => setDeliveryZone(zone.value)} />
+                    <span className="text-sm font-medium">{zone.label}</span>
+                  </div>
+                  <span className="text-sm font-bold text-indigo-600">{formatPrice(zone.fee)}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Payment Method */}
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Banknote className="w-5 h-5 text-green-600" />
+              <h2 className="font-semibold">Payment Method (পেমেন্ট)</h2>
+            </div>
+            <label className="flex items-center gap-3 p-4 rounded-lg border border-green-300 bg-green-50 dark:bg-green-900/20 dark:border-green-800 cursor-pointer">
+              <input type="radio" checked readOnly />
+              <div>
+                <p className="text-sm font-medium">Cash on Delivery (ক্যাশ অন ডেলিভারি)</p>
+                <p className="text-xs text-gray-500">Pay when you receive your order</p>
+              </div>
+            </label>
+          </div>
+
           {/* Order Items */}
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-            <h2 className="font-semibold mb-4">Order Items</h2>
+            <h2 className="font-semibold mb-4">Order Items ({items.length})</h2>
             <div className="space-y-3 text-sm">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between">
-                  <span>{item.product?.name} x {item.quantity}</span>
-                  <span>{formatPrice((item.variant?.price || item.product?.price || 0) * item.quantity)}</span>
+                  <span className="flex-1">{item.product?.name} <span className="text-gray-400">x {item.quantity}</span></span>
+                  <span className="font-medium">{formatPrice((item.variant?.price || item.product?.price || 0) * item.quantity)}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
+        {/* Order Summary Sidebar */}
         <div className="lg:col-span-1">
           <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 sticky top-24">
             <h2 className="font-semibold mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm mb-6">
               <div className="flex justify-between">
-                <span className="text-gray-500">Subtotal</span>
+                <span className="text-gray-500">Subtotal ({items.length} items)</span>
                 <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Shipping</span>
-                <span className="text-green-600">Free</span>
+                <span className="text-gray-500">Delivery Fee</span>
+                <span>{formatPrice(deliveryFee)}</span>
               </div>
               <div className="flex justify-between text-xs text-gray-400">
-                <span>Vendors</span>
-                <span>{Object.keys(itemsByVendor).length} (separate orders)</span>
+                <span>Payment</span>
+                <span>Cash on Delivery</span>
               </div>
-              <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-base">
+              {Object.keys(itemsByVendor).length > 1 && (
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>Vendors</span>
+                  <span>{Object.keys(itemsByVendor).length} (separate orders)</span>
+                </div>
+              )}
+              <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span className="text-indigo-600">{formatPrice(totalPrice)}</span>
+                <span className="text-indigo-600">{formatPrice(grandTotal)}</span>
               </div>
             </div>
             <button onClick={handlePlaceOrder} disabled={placing}
               className="w-full py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50">
-              {placing ? 'Placing Order...' : 'Place Order'}
+              {placing ? 'Placing Order...' : 'Place Order (COD)'}
             </button>
+            <p className="text-xs text-center text-gray-400 mt-3">
+              By placing this order, you agree to pay {formatPrice(grandTotal)} on delivery.
+            </p>
           </div>
         </div>
       </div>

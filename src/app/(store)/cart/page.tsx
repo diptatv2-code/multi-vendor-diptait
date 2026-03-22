@@ -97,8 +97,8 @@ export default function CartPage() {
                 <span>{formatPrice(totalPrice)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Shipping</span>
-                <span className="text-green-600">Free</span>
+                <span className="text-gray-500">Delivery</span>
+                <span className="text-gray-500">From ৳70</span>
               </div>
               <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-between font-bold text-base">
                 <span>Total</span>
