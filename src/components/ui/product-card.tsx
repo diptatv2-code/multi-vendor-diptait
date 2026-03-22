@@ -65,7 +65,7 @@ export function ProductCard({
         {imageUrl ? (
           <img src={imageUrl} alt={name} loading={priority ? 'eager' : 'lazy'}
             className="product-img max-w-full max-h-full object-contain transition-transform duration-300"
-            onError={(e) => { (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop'; }} />
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/f5f5f5/999?text=Product+Image'; }} />
         ) : (
           <ShoppingBag className="w-12 h-12 text-[#E8E8E8]" />
         )}

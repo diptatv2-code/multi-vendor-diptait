@@ -51,7 +51,10 @@ export function Header() {
             <button onClick={() => setMobileMenu(true)} className="lg:hidden p-2 -ml-2"><Menu className="w-5 h-5" /></button>
 
             <Link href="/" className="shrink-0 flex items-center gap-2">
-              <span className="text-xl font-bold tracking-tight">Multi<span className="text-[#F57224]">Vendor</span></span>
+              <div>
+                <span className="text-xl font-bold tracking-tight">Multi<span className="text-[#F57224]">Vendor</span></span>
+                <span className="block text-[9px] text-[#86868B] leading-none -mt-0.5">by DIPTAIT</span>
+              </div>
             </Link>
 
             <form onSubmit={handleSearch} className="flex-1 max-w-xl hidden md:block">

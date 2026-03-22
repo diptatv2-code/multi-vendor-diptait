@@ -142,7 +142,8 @@ export default function ProductDetailPage() {
           <div className="aspect-square rounded-xl overflow-hidden bg-[#F5F5F7] dark:bg-[#1A1A1A] mb-4 group/zoom cursor-crosshair relative">
             {images[selectedImage] ? (
               <img src={images[selectedImage].url} alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-200 group-hover/zoom:scale-150 origin-center" />
+                className="w-full h-full object-cover transition-transform duration-200 group-hover/zoom:scale-150 origin-center"
+                onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/600x600/f5f5f5/999?text=Product+Image'; }} />
             ) : (
               <div className="w-full h-full flex items-center justify-center"><Package className="w-16 h-16 text-gray-300" /></div>
             )}
@@ -152,7 +153,8 @@ export default function ProductDetailPage() {
               {images.map((img, i) => (
                 <button key={img.id} onClick={() => setSelectedImage(i)}
                   className={`w-20 h-20 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${i === selectedImage ? 'border-[#F57224] ring-2 ring-[#F57224]/20' : 'border-[#F0F0F0] dark:border-[#333] hover:border-[#F57224]'}`}>
-                  <img src={img.url} alt="" className="w-full h-full object-cover" />
+                  <img src={img.url} alt="" className="w-full h-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/200x200/f5f5f5/999?text=Image'; }} />
                 </button>
               ))}
             </div>
