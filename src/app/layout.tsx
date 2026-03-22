@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AuthProvider } from '@/components/auth-provider';
+import { CartProvider } from '@/components/cart-provider';
 import { ToastContainer } from '@/components/ui/toast';
 import { SITE_NAME, SITE_DESCRIPTION } from '@/lib/constants';
 import './globals.css';
@@ -23,8 +24,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased">
         <ThemeProvider>
           <AuthProvider>
-            {children}
-            <ToastContainer />
+            <CartProvider>
+              {children}
+              <ToastContainer />
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

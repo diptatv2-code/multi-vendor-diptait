@@ -7,7 +7,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { formatPrice } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import { Heart, Trash2, ShoppingBag, ShoppingCart } from 'lucide-react';
-import { useCart } from '@/hooks/use-cart';
+import { useCart } from '@/components/cart-provider';
 import Link from 'next/link';
 import type { Product } from '@/lib/types';
 

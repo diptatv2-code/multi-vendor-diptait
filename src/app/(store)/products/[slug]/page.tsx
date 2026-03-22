@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/components/auth-provider';
-import { useCart } from '@/hooks/use-cart';
+import { useCart } from '@/components/cart-provider';
 import { StarRating } from '@/components/ui/star-rating';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatPrice, formatDate, getInitials } from '@/lib/utils';

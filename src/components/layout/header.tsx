@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/components/auth-provider';
 import { useTheme } from '@/components/theme-provider';
-import { useCart } from '@/hooks/use-cart';
+import { useCart } from '@/components/cart-provider';
 import {
   Search, ShoppingCart, Heart, User, Menu, X, Sun, Moon, LogOut,
   LayoutDashboard, Store, ChevronDown, Package, Home, Grid3X3,
@@ -23,7 +23,16 @@ const categories = [
 export function Header() {
   const { user, profile, signOut } = useAuth();
   const { theme, setTheme } = useTheme();
-  const { totalItems } = useCart();
+  const { totalItems, cartVersion } = useCart();
+  const [badgePop, setBadgePop] = useState(false);
+
+  useEffect(() => {
+    if (cartVersion > 0) {
+      setBadgePop(true);
+      const t = setTimeout(() => setBadgePop(false), 300);
+      return () => clearTimeout(t);
+    }
+  }, [cartVersion]);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [userMenu, setUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,7 +116,7 @@ export function Header() {
                 <Link href="/cart" className="flex flex-col items-center p-2 hover:text-[#F57224] transition-colors relative">
                   <ShoppingCart className="w-5 h-5" />
                   {totalItems > 0 && (
-                    <span className="absolute top-0 right-0 w-5 h-5 bg-[#F57224] text-white text-[10px] rounded-full flex items-center justify-center font-bold">
+                    <span className={`absolute top-0 right-0 w-5 h-5 bg-[#F57224] text-white text-[10px] rounded-full flex items-center justify-center font-bold transition-transform duration-200 ${badgePop ? 'scale-125' : 'scale-100'}`}>
                       {totalItems > 9 ? '9+' : totalItems}
                     </span>
                   )}

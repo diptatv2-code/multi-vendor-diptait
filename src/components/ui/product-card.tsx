@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Heart, ShoppingCart, Star, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
-import { useCart } from '@/hooks/use-cart';
+import { useCart } from '@/components/cart-provider';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { toast } from '@/hooks/use-toast';
 
