@@ -30,32 +30,76 @@ export default function ProductDetailPage() {
   const [reviewComment, setReviewComment] = useState('');
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchProduct() {
       const supabase = createClient();
-      const { data } = await supabase
+      const productSlug = Array.isArray(slug) ? slug[0] : slug;
+
+      // Fetch product separately from joins to avoid RLS join failures
+      const { data: productData, error: productError } = await supabase
         .from('products')
-        .select('*, images:product_images(*), vendor:vendor_profiles(id, business_name, slug, logo_url, rating, rating_count), category:categories(name, slug), variants:product_variants(*)')
-        .eq('slug', slug)
+        .select('*')
+        .eq('slug', productSlug)
+        .eq('status', 'approved')
         .single();
 
-      if (data) {
-        setProduct(data as unknown as Product);
-
-        const { data: revs } = await supabase
-          .from('reviews')
-          .select('*, user:user_profiles!reviews_user_id_fkey(full_name)')
-          .eq('product_id', data.id)
-          .order('created_at', { ascending: false });
-        setReviews((revs as unknown as Review[]) || []);
-
-        if (user) {
-          const { data: wl } = await supabase.from('wishlists').select('id').eq('product_id', data.id).eq('user_id', user.id).single();
-          setInWishlist(!!wl);
-        }
+      if (productError || !productData) {
+        setLoading(false);
+        return;
       }
+
+      // Fetch images separately
+      const { data: images } = await supabase
+        .from('product_images')
+        .select('*')
+        .eq('product_id', productData.id)
+        .order('sort_order');
+
+      // Fetch vendor separately
+      const { data: vendorData } = await supabase
+        .from('vendor_profiles')
+        .select('id, business_name, slug, logo_url, rating, rating_count')
+        .eq('id', productData.vendor_id)
+        .single();
+
+      // Fetch category separately
+      const { data: categoryData } = productData.category_id
+        ? await supabase.from('categories').select('name, slug').eq('id', productData.category_id).single()
+        : { data: null };
+
+      // Fetch variants
+      const { data: variants } = await supabase
+        .from('product_variants')
+        .select('*')
+        .eq('product_id', productData.id)
+        .order('sort_order');
+
+      const fullProduct = {
+        ...productData,
+        images: images || [],
+        vendor: vendorData,
+        category: categoryData,
+        variants: variants || [],
+      };
+
+      setProduct(fullProduct as unknown as Product);
+
+      // Fetch reviews
+      const { data: revs } = await supabase
+        .from('reviews')
+        .select('*, user:user_profiles(full_name)')
+        .eq('product_id', productData.id)
+        .order('created_at', { ascending: false });
+      setReviews((revs as unknown as Review[]) || []);
+
+      // Check wishlist for logged-in users
+      if (user) {
+        const { data: wl } = await supabase.from('wishlists').select('id').eq('product_id', productData.id).eq('user_id', user.id).maybeSingle();
+        setInWishlist(!!wl);
+      }
+
       setLoading(false);
     }
-    fetch();
+    fetchProduct();
   }, [slug, user]);
 
   async function handleAddToCart() {
