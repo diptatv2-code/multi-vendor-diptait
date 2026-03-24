@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const slides = [
@@ -61,13 +62,14 @@ export function HeroSlider() {
         </div>
 
         {/* Image — visible on ALL screens */}
-        <div className="w-full md:w-1/2 h-40 md:h-full md:absolute md:right-0 md:top-0 md:bottom-0 order-1 md:order-2">
-          <img
+        <div className="relative w-full md:w-1/2 h-40 md:h-full md:absolute md:right-0 md:top-0 md:bottom-0 order-1 md:order-2">
+          <Image
             src={slide.image}
             alt={slide.title}
-            className="w-full h-full object-cover"
-            loading="eager"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            fill
+            className="object-cover"
+            priority={current === 0}
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
           {/* Fade on desktop only */}
           <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-[var(--slide-bg)] via-[var(--slide-bg)]/40 to-transparent"

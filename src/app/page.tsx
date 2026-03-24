@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ProductCard } from '@/components/ui/product-card';
@@ -7,6 +8,8 @@ import { HeroSlider } from '@/components/ui/hero-slider';
 import { ArrowRight, Truck, Shield, Banknote, Headphones } from 'lucide-react';
 import { SITE_NAME } from '@/lib/constants';
 import type { Metadata } from 'next';
+
+export const revalidate = 60;
 
 export const metadata: Metadata = { title: SITE_NAME, description: 'Bangladesh\'s trusted multi-vendor marketplace' };
 
@@ -62,7 +65,7 @@ export default async function HomePage() {
                 img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=300&fit=crop', color: 'from-black/60' },
             ].map((b) => (
               <Link key={b.title} href={b.href} className="relative rounded-xl overflow-hidden group h-40 md:h-48 flex items-end">
-                <img src={b.img} alt={b.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                <Image src={b.img} alt={b.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 <div className={`absolute inset-0 bg-gradient-to-t ${b.color} to-transparent`} />
                 <div className="relative p-5 text-white">
                   <h3 className="text-lg font-semibold">{b.title}</h3>
@@ -87,8 +90,8 @@ export default async function HomePage() {
         {/* Promo Banner */}
         <section className="max-w-7xl mx-auto px-4 py-4">
           <Link href="/products?category=fashion" className="block relative rounded-xl overflow-hidden h-32 md:h-40 group">
-            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=300&fit=crop" alt=""
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+            <Image src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=300&fit=crop" alt="Fashion Sale"
+              fill sizes="100vw" className="object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#1D1D1F]/80 to-transparent" />
             <div className="relative flex items-center h-full px-8 md:px-12">
               <div className="text-white">

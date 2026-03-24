@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
 import { Heart, ShoppingCart, Star, ShoppingBag } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useCart } from '@/components/cart-provider';
@@ -26,6 +28,7 @@ export function ProductCard({
 }: ProductCardProps) {
   const { addToCart } = useCart();
   const { isInWishlist, toggle } = useWishlist();
+  const [imgError, setImgError] = useState(false);
   const inWishlist = isInWishlist(id);
 
   const discount = compareAtPrice && compareAtPrice > price
@@ -48,7 +51,7 @@ export function ProductCard({
       className="product-card group bg-white dark:bg-[#1A1A1A] rounded-lg border border-transparent hover:border-[#F0F0F0] dark:hover:border-[#333] flex flex-col overflow-hidden">
 
       {/* Image container */}
-      <div className="relative aspect-square bg-[#F5F5F7] dark:bg-[#1A1A1A] overflow-hidden flex items-center justify-center p-4">
+      <div className="relative aspect-square bg-[#F5F5F7] dark:bg-[#1A1A1A] overflow-hidden flex items-center justify-center">
         {discount > 0 && (
           <div className="absolute top-3 left-3 z-10 bg-[#F57224] text-white text-[10px] font-bold px-2 py-0.5 rounded">
             -{discount}%
@@ -62,10 +65,12 @@ export function ProductCard({
           <Heart className={`w-4 h-4 ${inWishlist ? 'fill-red-500' : ''}`} />
         </button>
 
-        {imageUrl ? (
-          <img src={imageUrl} alt={name} loading={priority ? 'eager' : 'lazy'}
-            className="product-img max-w-full max-h-full object-contain transition-transform duration-300"
-            onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/400x400/f5f5f5/999?text=Product+Image'; }} />
+        {imageUrl && !imgError ? (
+          <Image src={imageUrl} alt={name} fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            className="product-img object-contain transition-transform duration-300 p-2"
+            priority={priority}
+            onError={() => setImgError(true)} />
         ) : (
           <ShoppingBag className="w-12 h-12 text-[#E8E8E8]" />
         )}
@@ -93,9 +98,9 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Add to Cart — below price, visible on hover */}
+        {/* Add to Cart — always visible on mobile, hover on desktop */}
         <button onClick={handleAddToCart}
-          className="w-full flex items-center justify-center gap-2 bg-[#1D1D1F] hover:bg-[#333] text-white text-xs font-medium py-2 rounded-lg transition-all opacity-0 group-hover:opacity-100 mt-auto">
+          className="w-full flex items-center justify-center gap-2 bg-[#1D1D1F] hover:bg-[#333] text-white text-xs font-medium py-2 rounded-lg transition-all md:opacity-0 md:group-hover:opacity-100 mt-auto">
           <ShoppingCart className="w-3.5 h-3.5" /> Add to Cart
         </button>
       </div>
