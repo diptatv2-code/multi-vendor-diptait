@@ -30,6 +30,8 @@ export default function OrdersPage() {
     fetch();
   }, [user]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   async function viewOrder(order: Order) {
     setSelectedOrder(order);
     const supabase = createClient();

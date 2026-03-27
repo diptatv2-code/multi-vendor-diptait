@@ -36,6 +36,8 @@ export default function ProfilePage() {
     fetch();
   }, [user]);
 
+  if (!user || !profile) return <div className="py-10 text-center">Loading...</div>;
+
   async function saveProfile(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);

@@ -30,6 +30,8 @@ export default function VendorReviewsPage() {
     fetch();
   }, [user]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Reviews</h1>

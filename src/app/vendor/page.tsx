@@ -40,6 +40,8 @@ export default function VendorDashboard() {
     fetch();
   }, [user]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   if (loading) {
     return (
       <div>

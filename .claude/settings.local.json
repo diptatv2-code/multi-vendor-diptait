@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:multi.diptait.com.bd)",
+      "mcp__claude_ai_Vercel__get_runtime_logs"
+    ]
+  }
+}

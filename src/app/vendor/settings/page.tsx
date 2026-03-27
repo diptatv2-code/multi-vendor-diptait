@@ -19,6 +19,8 @@ export default function VendorSettingsPage() {
     }
   }, [profile]);
 
+  if (!user || !profile) return <div className="py-10 text-center">Loading...</div>;
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);

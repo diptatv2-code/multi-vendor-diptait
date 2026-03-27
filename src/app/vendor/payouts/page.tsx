@@ -28,6 +28,8 @@ export default function VendorPayoutsPage() {
     fetch();
   }, [user]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   const totalPaid = payouts.filter((p) => p.status === 'completed').reduce((s, p) => s + Number(p.amount), 0);
   const totalPending = payouts.filter((p) => p.status === 'pending').reduce((s, p) => s + Number(p.amount), 0);
 

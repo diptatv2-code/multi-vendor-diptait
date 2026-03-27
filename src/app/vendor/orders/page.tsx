@@ -38,6 +38,8 @@ export default function VendorOrdersPage() {
 
   useEffect(() => { fetchOrders(); }, [user, filter]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   async function updateOrderStatus() {
     if (!selectedOrder || !newStatus) return;
     const supabase = createClient();

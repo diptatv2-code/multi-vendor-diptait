@@ -34,6 +34,8 @@ export default function VendorProductsPage() {
     fetch();
   }, [user]);
 
+  if (!user) return <div className="py-10 text-center">Loading...</div>;
+
   async function deleteProduct(id: string) {
     if (!confirm('Delete this product?')) return;
     const supabase = createClient();
